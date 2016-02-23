@@ -47,108 +47,31 @@ Follow the development plan included with the project to build out the basic vie
 
 ### View Hierarchy
 
-1. Add a ```UITableViewController``` Timeline view controller, embed it in a ```UINavigationController```, add a + button as the right ```UIBarButtonItem```, embed the ```UINavigationController``` in a ```UITabBarController```, update the ```UITabBarItem``` to describe the scene.
-    * note: The + button will be used to add photos.
-2. Add a ```TimelineTableViewController.swift``` subclass of ```UITableViewController``` and assign it to the Timeline scene.
-3. Add a ```UITableViewController``` Post Detail view controller, add a segue to it from a cell in the table view of the Timeline scene.
-4. Add a ```PostDetailTableViewController.swift``` subclass of ```UITableViewController``` and assign it to the Post Detail scene.
-5. Add a ```UITableViewController``` User List / Search view controller, embed it in a ```UINavigationController```, add a segmented control as the title view for the navigation bar with 'Friends' and 'Add Friend' segment titles, and add it to the ```UITabBarController```, update the ```UITabBarItem``` to describe the scene.
-    * note: This view will be used for search and for listing friends.
-6. Add a ```UserSearchTableViewController.swift``` subclass of ```UITableViewController``` and assign it to the User List/Search scene.
-7. Add a ```UIViewController``` User Detail / Profile view controller, embed it in a ```UINavigationController```, and add it to the ```UITabBarController```, update the ```UITabBarItem``` to describe the scene. Now, add a segue from a table view cell of the User Search view directly to the User Detail / Profile view controller (bypass it's ```UINavigationController```).
-8. Add a ```ProfileViewController.swift``` subclass of ```UIViewController``` and assign it to the Profile scene.
-9. Add a ```UITableViewController``` Add Photo table view controller, embed in ```UINavigationController```, add a segue to it from the Timeline scene ```UIBarButtonItem```.
-    * note: We will use a static table view for our Add Photo view, static table views should be used sparingly, but they can be useful for a table view that will never change, such as a basic form.
-10. Add a ```AddPhotoTableViewController.swift``` subclass of ```UITableViewController``` and assign it to the Add Photo scene.
-11. Add a ```UIViewController``` Login / Signup Choice view controller, embed it in a ```UINavigationController```, add a login button and a sign up button, add a ```Present Modally``` segue to it from the ```UITabBarController```.
-12. Add a ```LoginSignupChoiceViewController.swift``` subclass of ```UIViewController``` and assign it to the Login / Signup Choice scene.
-13. Add a ```UIViewController``` Login / Signup view controler, add two segues to it from the login and signup buttons on the Login / Signup Choice scene.
-14. Add a ```LoginSignupViewController.swift``` subclass of ```UIViewcontroller``` and assign it to the Login / Signup scene.
+
     
 ### Implement Model
 
 #### User
 
-Create a 'User' model struct that will hold a username, optional bio, and optional url.
-
-1. Create a ```User.swift``` file and define a new ```User``` struct.
-2. Add properties for ```username```, ```bio```, ```url```, and optional ```identifier```.
-    * note: Since a ```User``` can exist without a bio or url, ```bio``` and ```url``` are optional properties.
-3. Add a memberwise initializer that takes parameters for each property. The parameter for ```identifier``` should be of type String.
-    * Set a default parameter ```nil``` for the ```bio``` and ```url``` properties.
-4. Implement the Equatable protocol by comparing both the ```username```s and ```identifier```s.
-
 #### Comment
-
-Create a 'Comment' model struct that will hold a username, text, and reference to the parent ```Post```.
-
-1. Create a ```Comment.swift``` file and define a new ```Comment``` struct.
-2. Add properties for ```username```, ```text```, ```postIdentifier```, and optional ```identifier```.
-3. Add a memberwise initializer that takes parameters for each property
-    * Set a default parameter ```nil``` for optional properties
-4. Implement the Equatable protocol by comparing bolth the ```username```s and ```identifier```s.
 
 #### Like
 
 Create a 'Like' model struct that will hold a username, and reference to the parent ```Post```.
 
-1. Create a ```Like.swift``` class file and define a new ```Like``` struct
-2. Add properties for ```username```, ```postIdentifier```, and optional ```identifier```
-3. Add a memberwise initializer that takes parameters for each property
-    * Set a default parameter ```nil``` for optional properties
-4. Implement the Equatable protocol by comparing both the ```username```s and ```identifier```s.
-
 #### Post
-
-Create a 'Post' model struct that will hold a pointer to an image, optional caption, username, array of comments, array of likes.
-
-1. Create a ```Post.swift``` file and define a new ```Post``` struct.
-2. Add properties for ```imageEndPoint```, ```caption```, ```username```, ```comments```, ```likes```, and optional ```identifier```.
-    * note: Since a ```Post``` can exist without a caption, ```caption``` is an optional property.
-3. Add a memberwise initializer that takes parameters for each property.
-    * Set a default parameter ```nil``` for optional properties, and empty arrays for the ```commments``` and ```likes```.
-4. Implement the Equatable protocol by comparing both the ```username```s and ```identifier```s.
-
-The model objects will later conform to a FirebaseType protocol that will ease working with Firebase. You will add the required properties and functions at that point.
 
 ### Model Controller API
 
-All of our calls to Firebase will be asynchronous. We will need to use completion closures for each call that reaches out to the network and returns a value.
-
 ### UserController
 
-Create a ```UserController``` model object controller that will manage and serve ```User``` objects to the rest of the application. The ```UserController``` will also handle managing followers and followed accounts. As you write each function, consider how you would approach writing the implementation, consider writing comments on the steps you would take to compare to later instructions.
 
-1. Create a ```UserController.swift``` file and define a new ```UserController``` class inside.
-2. Add a ```currentUser: User!``` property that returns the current user as an implicitly unwrapped optional.
-    * note: The current user's authentication details will be stored locally or set during initialization, so this can be a synchronous property.
-    * note: Implicitly unwrapped optionals can be treated as optionals for checking, and as regular functions, we are building an assumption that if there is no user, the login/signup screen will be presented until there is one.
-3. Set the default value of ```currentUser``` property to nil.
-4. Add a static ```sharedController``` property that will help serve our ```currentUser``` consistently through the app.
-5. Define a static function ```userForIdentifier``` that takes an identifier and completion closure with an optional User parameter.
 
-One time sample included:
 
-```
-static func userForIdentifier(identifier: String, completion: (user: User?) -> Void) {
-    
-}
-```
-
-6. Define a static function ```fetchAllUsers``` that takes a completion closure with an array of User parameter.
-7. Define a static function ```followUser``` that takes a user and completion closure with a success Boolean parameter.
-8. Define a static function ```unfollowUser``` that takes a user and a completion closure with a success Boolean parameter.
-9. Define a static function ```userFollowsUser``` that takes a user, and a user to check against, and a completion closure with a follows Boolean parameter.
-10. Define a static function ```followedByUser``` that takes a user and completion closure with an optional array of Users parameter.
-11. Define a static function ```authenticateUser``` that takes an email, password, and completion closure with a success Boolean parameter and optional User parameter.
-    * note: Will be used to authenticate against our Firebase database of users.
-12. Define a static function ```createUser``` that takes an email, username, password, optional bio, optional url, and completion closure with a success Boolean parameter and optional User parameter.
-    * note: Will be used to create a user in Firebase.
-13. Define a static function ```updateUser``` that takes a user, username, optional bio, optional url, and completion closure with a success Boolean parameter and optional User parameter.
-14. Define a static function ```logOutCurrentUser``` that takes no parameters.
-15. Define a static function ```mockUsers()``` that returns an array of sample users.
 16. Implement the ```mockUsers()``` function by returning an array of at least 3 initialized users
+
 17. Use the ```mockUsers()``` function to implement staged completion closures in the rest of your static functions with completion closures.
+
 18. Update the initialization of the ```currentUser``` to the result of the first mock user.
 
 ### PostController
