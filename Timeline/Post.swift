@@ -20,7 +20,7 @@ struct Post: Equatable {
     var likes = [Like]()
     var identifier: String?
     
-    init(imageEndPoint: String, username: String) {
+    init(imageEndPoint: String, username: String, caption: String?, comments: [Comment], likes: [Like], identifier: String?) {
         self.imageEndPoint = imageEndPoint
         self.username = username
         self.caption = nil

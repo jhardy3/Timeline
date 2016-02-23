@@ -65,34 +65,7 @@ Create a 'Like' model struct that will hold a username, and reference to the par
 
 ### UserController
 
-
-
-
-16. Implement the ```mockUsers()``` function by returning an array of at least 3 initialized users
-
-17. Use the ```mockUsers()``` function to implement staged completion closures in the rest of your static functions with completion closures.
-
-18. Update the initialization of the ```currentUser``` to the result of the first mock user.
-
 ### PostController
-
-Create a ```PostController``` model object controller that will manage and serve ```Post``` objects to the rest of the application. The ```PostController``` will also handle managing comments and likes. As you write each function, consider how you would approach writing the implementation, consider writing comments on the steps you would take to compare to later instructions.
-
-1. Create a ```PostController.swift``` file and define a new ```PostController``` class inside.
-2. Define a static function ```fetchTimelineForUser``` that takes a user and completion closure with an array of ```Post``` object parameter.
-3. Define a static function ```addPost``` that takes an image, optional caption, and completion closure with a success Boolean parameter and optional ```Post``` parameter.
-4. Define a static function ```postFromIdentifier``` that takes an identifier and completion closure with optional ```Post``` parameter.
-5. Define a static function ```postsForUser``` that takes a ```User``` and completion closure with optional array of ```Post``` objects parameter.
-6. Define a static function ```deletePost``` that takes a ```Post```.
-7. Define a static function ```addCommentWithTextToPost``` that takes a ```String```, ```Post```, and completion closure with a success Boolean parameter and optional ```Post``` parameter.
-8. Define a static function ```deleteComment``` that takes a ```Comment``` and completion closure with a success Boolean parameter and optional ```Post``` parameter.
-9. Define a static function ```addLikeToPost``` that takes a ```Post```, and completion closure with a success Boolean parameter and optional ```Post``` parameter.
-10. Define a static function ```deleteLike``` that takes a ```Like``` and completion closure with a success Boolean parameter and optional ```Post``` parameter.
-11. Define a static function ```orderPosts``` that takes an array of ```Post``` objects and returns a sorted array of ```Post``` objects. For now, return an empty array.
-12. Define a static function ```mockPosts()``` function that returns an array of sample posts.
-13. Implement the ```mockPosts()``` function by returning an array of at least 3 initalized posts.
-    * note: Use a static string ```-K1l4125TYvKMc7rcp5e``` as the sample image identifier.
-14. Use the ```mockPosts()``` function to implement staged completion closures in the rest of your static functions.
 
 ### ImageController
 

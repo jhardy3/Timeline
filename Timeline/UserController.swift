@@ -13,7 +13,7 @@ class UserController {
     
     // MARK: - Properties
     
-    var currentUser: User! = nil
+    var currentUser: User! = User(username: "JakeOfUtah", identifier: nil, bio: nil, url: nil)
     
     static let sharedInstance = UserController()
     
@@ -26,6 +26,7 @@ class UserController {
     
     // Returns all users in a completion block
     static func fetchAllUsers(completion: (users: [User]) -> Void) {
+        completion(users: mockUsers())
         
     }
     
@@ -46,7 +47,7 @@ class UserController {
     
     // Shows wh0 is is following a user
     static func followedByUser(user: User, completion: (users: [User]?) -> Void) {
-        
+        completion(users: mockUsers())
     }
     
     // Check to see if a user is actually relevant when loggin in
@@ -71,7 +72,13 @@ class UserController {
     
     // Mock Users Array
     static func mockUsers() -> [User] {
-        return []
+        return [
+        
+            User(username: "JakeOfUtah", identifier: nil, bio: nil, url: nil),
+            User(username: "nilCoalescer", identifier: nil, bio: nil, url: nil),
+            User(username: "xXsupsXx", identifier: nil, bio: nil, url: nil)
+            
+        ]
     }
     
     
