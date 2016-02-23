@@ -26,6 +26,7 @@
 		74F592B71C7D06D200C85351 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F592B61C7D06D200C85351 /* Post.swift */; };
 		74F592B91C7D089600C85351 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F592B81C7D089600C85351 /* UserController.swift */; };
 		74F592BB1C7D12E400C85351 /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F592BA1C7D12E400C85351 /* PostController.swift */; };
+		74F592BD1C7D19C600C85351 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F592BC1C7D19C600C85351 /* ImageController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		74F592B61C7D06D200C85351 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		74F592B81C7D089600C85351 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		74F592BA1C7D12E400C85351 /* PostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
+		74F592BC1C7D19C600C85351 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				74F592B61C7D06D200C85351 /* Post.swift */,
 				74F592B81C7D089600C85351 /* UserController.swift */,
 				74F592BA1C7D12E400C85351 /* PostController.swift */,
+				74F592BC1C7D19C600C85351 /* ImageController.swift */,
 				74F592AF1C7D01BC00C85351 /* View Controllers */,
 				01E3FC2B1BE92C7600187536 /* Assets.xcassets */,
 				01E3FC2D1BE92C7600187536 /* LaunchScreen.storyboard */,
@@ -305,6 +308,7 @@
 				74F592AA1C7D005800C85351 /* AddPhotoTableViewController.swift in Sources */,
 				74F592B71C7D06D200C85351 /* Post.swift in Sources */,
 				7462CC961C7CFBD9002588C4 /* TimeLineTableViewController.swift in Sources */,
+				74F592BD1C7D19C600C85351 /* ImageController.swift in Sources */,
 				74F592B91C7D089600C85351 /* UserController.swift in Sources */,
 				01E3FC251BE92C7600187536 /* AppDelegate.swift in Sources */,
 				74F592B31C7D047F00C85351 /* Comment.swift in Sources */,

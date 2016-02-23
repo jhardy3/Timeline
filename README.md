@@ -69,13 +69,7 @@ Create a 'Like' model struct that will hold a username, and reference to the par
 
 ### ImageController
 
-Create an ```ImageController``` that will manage and serve images to the rest of the application. The ```ImageController``` will also handle uploading and downloading photos, and add an extension on UIImage that allows converting the image to and from Base 64 encoded strings. As you write each function, consider how you would approach writing the implementation, consider writing comments on the steps you would take to compare to later instructions.
 
-1. Create a ```ImageController.swift``` file and define a new ```ImageController``` class inside.
-2. Define a static function ```uploadImage``` that takes an image and completion closure with an identifier ```String``` parameter.
-    * note: We use an identifier for the image instead of a URL because we are uploading to Firebase. If we were uploading to Amazon S3 or other cloud service, we would probably return a URL instead of identifier.
-3. Implement a mock response by calling the completion closure with ```-K1l4125TYvKMc7rcp5e``` as the identifier.
-4. Define a static function ```imageForIdentifier``` that takes an identifier (String) and completion closure with an optional UIImage parameter.
 5. Implement a mock response by returning a UIImage named "MockPhoto"
 6. Add a sample photo to the ```Assets.xcassets``` folder named ```MockPhoto``` for you to use as staged data.
 
