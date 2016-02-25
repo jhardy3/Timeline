@@ -89,7 +89,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="k4P-qh-ath" kind="show" id="ElU-af-jmo"/>
+                                    <segue destination="k4P-qh-ath" kind="show" identifier="toProfileFromSearchResults" id="ElU-af-jmo"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -450,7 +450,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ElU-af-jmo"/>
         <segue reference="YUE-vg-JvL"/>
+        <segue reference="ElU-af-jmo"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -50,6 +50,12 @@ class UserSearchResultsTableViewController: UITableViewController {
         
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let sender = tableView.cellForRowAtIndexPath(indexPath)
+        self.presentingViewController?.performSegueWithIdentifier("toProfileFromSearchResults", sender: sender)
+        
+    }
 
 
     /*

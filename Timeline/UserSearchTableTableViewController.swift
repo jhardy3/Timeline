@@ -54,7 +54,7 @@ class UserSearchTableTableViewController: UITableViewController {
         
         createSearchBar()
         updateViewBasedOnMode()
-
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -99,10 +99,26 @@ class UserSearchTableTableViewController: UITableViewController {
     // MARK: - Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let profileView = segue.destinationViewController as? ProfileViewController
-        guard let sender = sender as? UITableViewCell, let index = self.tableView.indexPathForCell(sender) else { return }
-        let user = usersDataSource[index.row]
-        profileView?.user = user
+        
+        if segue.identifier == "toProfileFromSearchResults" {
+            let profileView = segue.destinationViewController as? ProfileViewController
+            _ = profileView?.view
+            let cell = sender as! UITableViewCell
+            var selectedUser: User
+            
+            if let indexPath = (searchController.searchResultsController as! UserSearchResultsTableViewController).tableView.indexPathForCell(cell) {
+                
+                let filteredEntries = (searchController.searchResultsController as! UserSearchResultsTableViewController).usersResultDataSource
+                selectedUser = filteredEntries[indexPath.row]
+                
+            } else {
+                let users = usersDataSource
+                guard let usersIndexPath = tableView.indexPathForCell(cell) else { return }
+                selectedUser = users[usersIndexPath.row]
+            }
+            
+            profileView?.user = selectedUser
+        }
     }
     
     // MARK: - Action Button Functions
