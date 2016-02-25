@@ -117,56 +117,19 @@ Build a check on the ```UserController.currentUser()``` to present the Login / S
 
 ##### Segue to the Profile View
 
-e issue you will solve next by navigating to the Profile View via the User List. Try again using the Search Results. Consider why this doesn't work, and what avenues you could take to fix it.
-
-The user should be able to select a user to view the Profile view for that user in both the regular list view and the search detail view. Implementing a segue from the Search Results view will only present the Profile View modally, not using the ```UINavigationController``` to push the view. You will implement the segue, then use the ```UITableViewDelegate``` function ```didSelectRowAtIndexPath``` to manually perform the segue on the main list view. 
-
-5. Open the ```UserSearchResultsTableViewController.swift``` file and add the ```UITableViewDelegate``` function ```didSelectRowAtIndexPath```.
-
-
-
-6. Implement the function by capturing the sending cell and telling it's ```presentingViewController``` to perform the segue manually.
-    * example: ```self.presentingViewController?.performSegueWithIdentifier("toProfileView", sender: sender)```
-One more step to get the segue working as expected. You need to update the ```prepareForSegue``` function to get the correct ```User``` to the ```ProfileViewController```. Try to work through the problem without looking at the solution code.
-
-7. Update the ```prepareForSegue``` function in ```UserSearchTableViewController``` to check if ```self.tableView``` can get an ```indexPath``` for the sender. If it can, that means that the cell was from ```self.tableView``` and we can capture the user from ```usersDataSource``` using the index path. If it cannot get an indexPath from ```self.tableView```, then the cell is from the table view that lives on the ```searchResultsController```. If that is the case, capture the user from the ```usersResultsDataSource``` on the ```searchResultController```.
-    * note: You can access the ```searchResultsController``` by calling ```(searchController.searchResultsController as! UserListSearchResultsTableViewController)```. 
 
 ### Profile View
 
-Build a view to display details about any user of the app. The view will also allow the ```currentUser``` to update their profile photo, bio, or url. 
+
 
 ##### Collection View Section Header
 
-1. Add a Collection View to the ```ProfileViewController``` scene in ```Main.storyboard```.
-2. Add a Collection Reusable View in the collection view.
-3. Assign ProfileViewController (self) as the ```datasource``` and ```delegate``` of the collection view.
-4. Design the Collection Reusable View using a ```UIStackView``` to display a bio label, a homepage button, and a follow user button.
-5. Assign a reuse identifier to the reusable view.
-6. Create a ```ProfileHeaderCollectionResuableView.swift``` subclass of ```UICollectionReusableView``` and assign it to the associated view in ```Main.storyboard```.
-7. Add IBOulets for the bioLabel, urlButton, and followUserButton.
-8. Add a ```updateWithUser(user: User)``` function.
-9. Implement the function to set the title and bioLabel, remove labels if the user doesn't have an associated value, sets the title of ```followUserButton``` based on whether the current user is following, removes the ```followUserButton``` if the user is the ```currentUser```.
-10. Define a ```ProfileHeaderCollectionReusableViewDelegate``` protocol with required functions for ```userTappedFollowActionButton``` and ```userTappedURLButton```.
-11. Add an optional delegate property.
-12. Add IBActions ```urlButtonTapped``` and ```followActionButtonTapped```.
+
 13. Implement the action functions by calling the appropriate function on the delegate.
 
 ##### Set up the Image Cell
 
-1. Assign a reuse identifier for the included cell.
-2. Add a ```UIImageView``` that fills the cell.
-3. Create a ```ImageCollectionViewCell.swift``` subclass of ```UICollectionViewCell```.
-4. Add an outlet ```imageView``` for the image view.
-5. Add a function ```updateWithImageIdentifier(identifier: String)```.
-6. Implement the function to use the ImageController to get the image matching the identifier, assign the image to the image view in the completion closure.
-
 ##### Collection View DataSource
-
-1. In the ```ProfileViewController```, add a ```userPosts``` property as an empty array of ```Post``` objects.
-    * note: This array will hold the posts that should be displayed in the collection view.
-2. Add a ```updateBasedOnUser``` function.
-3. Implement the function by setting the title of the view, using the ```PostController``` to fetch the posts for the user, assigning the ```userPosts``` to the results, and reloading the collection view in the completion closure.
 
 Now that you have an array of ```userPosts``` you can implement the required ```UICollectionViewDataSource``` functions to display the posts, and update the Header View with the current user.
 

@@ -159,6 +159,86 @@
                     <view key="view" contentMode="scaleToFill" id="7NO-Vn-fDs">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Myh-6G-bZX">
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dzg-Ct-Fze">
+                                    <size key="itemSize" width="300" height="300"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="postCell" id="Vgu-7p-ywK" customClass="ImageCollectionViewCell" customModule="Timeline" customModuleProvider="target">
+                                        <rect key="frame" x="150" y="114" width="300" height="300"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2Ra-ZC-bBd">
+                                                    <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="2Ra-ZC-bBd" firstAttribute="top" secondItem="Vgu-7p-ywK" secondAttribute="top" id="5ay-jA-bce"/>
+                                            <constraint firstAttribute="trailing" secondItem="2Ra-ZC-bBd" secondAttribute="trailing" id="aOK-iJ-LU7"/>
+                                            <constraint firstItem="2Ra-ZC-bBd" firstAttribute="leading" secondItem="Vgu-7p-ywK" secondAttribute="leading" id="dJK-B1-eL2"/>
+                                            <constraint firstAttribute="bottom" secondItem="2Ra-ZC-bBd" secondAttribute="bottom" id="qi4-ik-Pb9"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="2Ra-ZC-bBd" id="kpy-F0-GO1"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profileHeaderView" id="NWd-hz-f7h" customClass="ProfileHeaderCollectionReusableView" customModule="Timeline" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="64" width="600" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="5vY-d3-5xy">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhG-ah-hDN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="50"/>
+                                                    <state key="normal" title="Bio"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B49-ip-nIQ">
+                                                    <rect key="frame" x="200" y="0.0" width="200" height="50"/>
+                                                    <state key="normal" title="Homepage"/>
+                                                    <connections>
+                                                        <action selector="urlButtonTapped:" destination="NWd-hz-f7h" eventType="touchUpInside" id="c2j-9G-U3D"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EL9-dH-xrn">
+                                                    <rect key="frame" x="400" y="0.0" width="200" height="50"/>
+                                                    <state key="normal" title="Follow"/>
+                                                    <connections>
+                                                        <action selector="followActionButtonTapped:" destination="NWd-hz-f7h" eventType="touchUpInside" id="RTP-pU-Hc2"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="5vY-d3-5xy" firstAttribute="top" secondItem="NWd-hz-f7h" secondAttribute="top" id="1lA-N2-oL9"/>
+                                        <constraint firstAttribute="trailing" secondItem="5vY-d3-5xy" secondAttribute="trailing" id="cjo-f2-Ewv"/>
+                                        <constraint firstAttribute="bottom" secondItem="5vY-d3-5xy" secondAttribute="bottom" id="gAT-Da-MCz"/>
+                                        <constraint firstItem="5vY-d3-5xy" firstAttribute="leading" secondItem="NWd-hz-f7h" secondAttribute="leading" id="jAN-uA-SQn"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="bioButton" destination="KhG-ah-hDN" id="ykf-sb-I2v"/>
+                                        <outlet property="followButton" destination="EL9-dH-xrn" id="DzB-UV-eIn"/>
+                                        <outlet property="homePageButton" destination="B49-ip-nIQ" id="zi5-Oe-Qzw"/>
+                                    </connections>
+                                </collectionReusableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="k4P-qh-ath" id="DSr-0c-9Ui"/>
+                                    <outlet property="delegate" destination="k4P-qh-ath" id="zAJ-VL-gNP"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="OlP-qX-vcI"/>

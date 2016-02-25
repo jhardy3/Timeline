@@ -11,6 +11,7 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     var user: User?
+    var userPosts = [Post]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,16 +23,54 @@ class ProfileViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func updateBasedOnUser() {
+        guard let user = user else { return }
+        PostController.postsForUser(user) { (posts) -> Void in
+            guard let posts = posts else { return }
+            self.userPosts = posts
+        }
     }
-    */
 
+}
+
+extension ProfileViewController: ProfileHeaderCollectionReusableViewDelegate {
+    
+    
+    // May need to call main queue and reload view
+    func userTappedFollowActionButton() {
+        guard let user = user else { return }
+        UserController.userFollowsUser(UserController.sharedInstance.currentUserVar!, userTwo: user) { (isFollowing) -> Void in
+            if isFollowing {
+                UserController.unfollowUser(user, completion: { (wasSuccesful) -> Void in
+                    
+                })
+            } else {
+                UserController.followUser(user, completion: { (wasSuccesful) -> Void in
+                    
+                })
+            }
+        }
+    }
+    
+    func userTappedURLButton() {
+        
+        
+    }
+}
+
+extension ProfileViewController: UICollectionViewDataSource {
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return userPosts.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("postCell", forIndexPath: indexPath)
+        return cell
+    }
 }
