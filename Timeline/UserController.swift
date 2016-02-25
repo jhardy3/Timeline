@@ -13,7 +13,7 @@ class UserController {
     
     // MARK: - Properties
     
-    var currentUserVar: User?
+    var currentUserVar: User? = User(username: "Test", identifier: nil, bio: nil, url: nil)
     
     static let sharedInstance = UserController()
     
@@ -47,7 +47,7 @@ class UserController {
     
     // Shows wh0 is is following a user
     static func followedByUser(user: User, completion: (users: [User]?) -> Void) {
-        completion(users: mockUsers())
+        completion(users: [User(username: "ACREEPER", identifier: nil, bio: nil, url: nil)])
     }
     
     // Check to see if a user is actually relevant when loggin in

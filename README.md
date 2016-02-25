@@ -96,66 +96,35 @@ Build a check on the ```UserController.currentUser()``` to present the Login / S
 
 ### User Search Table View
 
-The User Search Table View will be used for any list of multiple users, and provide search functionality for that list. The default view will have the option to view current friends, or all users of the app, and search between both. Each user cell should segue to the profile view for that user.
-
-
-Add functionality to the ViewMode that you can use to fetch the correct set of ```User``` objects. We will use this in our ```updateViewForMode``` to set the ```usersDataSource``` array with either friends, or all users. 
-
-6. Add a function to the ViewMode enum called ```users``` that takes a completion closure with an optional array of users as a parameter.
-    * note: All calls to the network should be asynchronous, so we will need to call this method and then set the ```usersDataSource``` after the results are returned via completion closure.
-7. Implement the function by switching on the enum, performing the appropriate ```UserController``` function, and running the completion block with the returned users.
-
-Your view should follow the 'updateWith' pattern for updating the view elements with the details of the mode.
-
-8. Add an ```updateViewBasedOnMode()``` function.
-9. Implement the 'updateWith' function to call the ```mode.users()``` function, implement the completion block to set the ```usersDataSource``` to the results, handle the case in which there are no results, and then reload the tableview with the updated array.
-10. Call the ```updateViewForMode()``` function in the ```viewDidLoad()``` function.
-11. Add an IBAction ```selectedIndexChanged``` for the segmented control that updates the view with the newly updated mode.
-
-Now that you have an array of ```User``` objects you can implement the required ```UITableViewDataSource``` functions to display usernames.
-
-12. Implement the ```numberOfRowsInSection``` by returning the count of displayed users.
-13. Implement the ```cellForRowAtIndexPath``` by capturing the ```User``` and setting the textlabel of the cell to the username.
-
-Check the view for functionality, you should get different results, if you return different results from your ```followedByUser()``` function.
-
 ##### Search Controller Implementation
 
-Search controllers typically have two views: a list view, and a search result view that displays the filtered results. You must create a 'search results view' that is overlayed on top of your list view when the search bar is actively editing, and then your main list view handles a ```SearchResultsUpdating``` protocol function that updates the results view.
 
-Understanding Search Controllers requires you to understand that the main view controller can (and must) implement methods that handle what is being displayed on another view controller. The results controller must also implement a way to communicate back to the main list view controller to notify it of events. This two way relationship with communication happening in both directions.
 
-Add the Search Results Controller
 
-1. Add a ```UITableViewController``` Search Results scene to ```Main.storyboard``` and assign the scene a storyboard identifier.
-2. Create a ```UserSearchResultsTableViewController.swift``` subclass of ```UITableViewController``` and assign it to the newly created scene in ```Main.storyboard```.
-3. Add a ```usersResultsDataSource``` property as an empty array of Users.
-    * note: This array will hold the users that should be displayed as search results, this array will be updated by our main list view controller when the user updates the search field.
-4. Implement the ```numberOfRowsInSection``` by returning the count of displayed users.
-5. Implement the ```cellForRowAtIndexPath``` by capturing the ```User``` and setting the textlabel of the cell to the username.
 
-Add the ```UISearchController``` to the UserSearchTableViewController
 
-6. Add a function ```setUpSearchController()``` that will initialize and assign settings to the ```UISearchController```.
-7. Add an implicily unwrapped property of ```UISearchController```.
-8. Implement the function by capturing an instance of the Search Results scene as a ```resultsController``` in ```Main.storyboard``` using the scene's storyboard identifier, initializing the ```UISearchController``` with the the ```resultsController```, setting the ```searchResultsUpdater``` to self, sizing the search bar, and setting the search controller's search bar as the header of the ```tableView```.
-9. Call the ```setUpSearchController()``` function in the ```viewDidLoad()```.
-10. Adopt the ```UISearchResultsUpdating``` protocol and add the required ```updateSearchResultsForSearchController(searchController: UISearchController)``` function.
-11. Implement the ```UISearchResultsUpdating``` function by capturing the text in the search bar and assigning the search controller's ```usersDataSource``` to a filtered array of ```User``` objects where the username contains the search term, then reload the result view's ```tableView```.
-    * note: You may want to convert the search term and usernames to lowercase using ```.lowercaseString``` to avoid case sensitive search results.
+
+
+
+
+
+
+
+
+
+
+
 
 ##### Segue to the Profile View
 
-1. Open the ```ProfileViewController.swift``` file and add an optional ```User``` property that will be set in the inbound ```prepareForSegue``` function.
-2. Open the ```UserSearchTableViewController.swift``` and add/uncomment a ```prepareForSegue``` function.
-3. Implement the function by casting the sender to a UITableViewCell, capturing the indexPath of the cell, capturing the selected user, capturing and casting the destination view controller as a ```ProfileViewController```, and assigning user to the destination view controller's property.
-4. Temporarily add a ```print(user)``` to the ```viewDidLoad``` function of the ```ProfileViewController``` to see that the user has correctly been assigned.
-
-Run the application and identify the issue you will solve next by navigating to the Profile View via the User List. Try again using the Search Results. Consider why this doesn't work, and what avenues you could take to fix it.
+e issue you will solve next by navigating to the Profile View via the User List. Try again using the Search Results. Consider why this doesn't work, and what avenues you could take to fix it.
 
 The user should be able to select a user to view the Profile view for that user in both the regular list view and the search detail view. Implementing a segue from the Search Results view will only present the Profile View modally, not using the ```UINavigationController``` to push the view. You will implement the segue, then use the ```UITableViewDelegate``` function ```didSelectRowAtIndexPath``` to manually perform the segue on the main list view. 
 
 5. Open the ```UserSearchResultsTableViewController.swift``` file and add the ```UITableViewDelegate``` function ```didSelectRowAtIndexPath```.
+
+
+
 6. Implement the function by capturing the sending cell and telling it's ```presentingViewController``` to perform the segue manually.
     * example: ```self.presentingViewController?.performSegueWithIdentifier("toProfileView", sender: sender)```
 One more step to get the segue working as expected. You need to update the ```prepareForSegue``` function to get the correct ```User``` to the ```ProfileViewController```. Try to work through the problem without looking at the solution code.
@@ -254,6 +223,45 @@ Add functionality for the current user to log out.
 
 1. In the ```ProfileHeaderCollectionReusableView```, use the follow button as a logout button if the user is equal to the currentUser. Set the title appropriately.
 2. In the implementation of the ```userTappedFollowActionButton()``` delegate method, check if the user is equal to the currentUser. If so, log out the current user and send the user to the first view controller in the tab bar. If not, it should do the appropriate follow/unfollow action.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Part Three - Wire Up Views (contd)
 
