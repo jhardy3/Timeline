@@ -55,7 +55,7 @@ class TimeLineTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("timelineCell", forIndexPath: indexPath)
         let post = self.posts[indexPath.row]
-        cell.textLabel?.text = post.caption
+        cell.textLabel?.text = post.username
         // Configure the cell...
 
         return cell

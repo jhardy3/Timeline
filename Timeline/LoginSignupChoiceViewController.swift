@@ -11,11 +11,7 @@ import UIKit
 class LoginSignupChoiceViewController: UIViewController {
 
     override func viewWillAppear(animated: Bool) {
-        if UserController.sharedInstance.currentUserVar == nil {
-            
-        } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+
     }
     
     override func viewDidLoad() {

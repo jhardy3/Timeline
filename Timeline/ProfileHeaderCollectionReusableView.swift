@@ -17,11 +17,6 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     var delegate: ProfileViewController?
     
     func updateWithUser(user: User) {
-        UserController.userFollowsUser(UserController.sharedInstance.currentUserVar!, userTwo: user) { (isFollowing) -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.followButton.setTitle("Unfollow", forState: .Normal)
-            })
-        }
         
         if user.bio == nil {
             bioButton.hidden = true
@@ -29,9 +24,19 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
         if user.url == nil {
             homePageButton.hidden = true
         }
-        if user == UserController.sharedInstance.currentUserVar {
-            followButton.hidden = true
+        
+        guard let currentUser = UserController.sharedInstance.currentUserVar where currentUser != user else { followButton.setTitle("Logout", forState: .Normal) ; return }
+        UserController.userFollowsUser(currentUser, userTwo: user) { (isFollowing) -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if isFollowing {
+                    self.followButton.setTitle("Unfollow", forState: .Normal)
+                } else {
+                    self.followButton.setTitle("Follow", forState: .Normal)
+                }
+            })
         }
+        
+
     }
     
     

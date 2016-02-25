@@ -13,7 +13,7 @@ class UserController {
     
     // MARK: - Properties
     
-    var currentUserVar: User? = User(username: "Test", identifier: nil, bio: nil, url: nil)
+    var currentUserVar: User? = nil
     
     static let sharedInstance = UserController()
     
@@ -72,7 +72,7 @@ class UserController {
     
     // logs the current User out
     static func logUserOut() {
-        
+        self.sharedInstance.currentUserVar = nil
     }
     
     // Mock Users Array

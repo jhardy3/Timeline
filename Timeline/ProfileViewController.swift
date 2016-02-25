@@ -10,12 +10,19 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var collectionView: UICollectionView!
     var user: User?
     var userPosts = [Post]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if user == nil {
+            self.user = UserController.sharedInstance.currentUserVar
+            editButton.enabled = true
+        }
+        updateBasedOnUser()
+        
         
         // Do any additional setup after loading the view.
     }
@@ -33,23 +40,37 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toEditProfile" {
+            guard let user = user, let destinationView = segue.destinationViewController as? LoginSignupViewController else { return }
+                destinationView.updateWithUser(user)
+                destinationView.viewWillAppear(true)
+        } 
+    }
 }
-
 extension ProfileViewController: ProfileHeaderCollectionReusableViewDelegate {
     
     
     // May need to call main queue and reload view
     func userTappedFollowActionButton() {
-        guard let user = user else { return }
-        UserController.userFollowsUser(UserController.sharedInstance.currentUserVar!, userTwo: user) { (isFollowing) -> Void in
-            if isFollowing {
-                UserController.unfollowUser(user, completion: { (wasSuccesful) -> Void in
-                    self.user = user
-                })
-            } else {
-                UserController.followUser(user, completion: { (wasSuccesful) -> Void in
-                    self.user = user
-                })
+        if let user = user where user == UserController.sharedInstance.currentUserVar! {
+            UserController.logUserOut()
+            self.user = nil
+            let instance = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarController")
+            presentViewController(instance, animated: false, completion: nil)
+                    } else {
+            
+            guard let user = user else { return }
+            UserController.userFollowsUser(UserController.sharedInstance.currentUserVar!, userTwo: user) { (isFollowing) -> Void in
+                if isFollowing {
+                    UserController.unfollowUser(user, completion: { (wasSuccesful) -> Void in
+                        self.user = user
+                    })
+                } else {
+                    UserController.followUser(user, completion: { (wasSuccesful) -> Void in
+                        self.user = user
+                    })
+                }
             }
         }
     }
@@ -72,8 +93,9 @@ extension ProfileViewController: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("postCell", forIndexPath: indexPath) as! ImageCollectionViewCell
-        let post = userPosts[indexPath.row].identifier ?? ""
-        cell.updateWithImageIdentifier(post)
+        if let post = userPosts[indexPath.row].identifier {
+            cell.updateWithImageIdentifier(post)
+        }
         return cell
     }
     

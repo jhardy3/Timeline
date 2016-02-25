@@ -124,20 +124,10 @@ Build a check on the ```UserController.currentUser()``` to present the Login / S
 
 ##### Collection View Section Header
 
-
-13. Implement the action functions by calling the appropriate function on the delegate.
-
-##### Set up the Image Cell
-
-##### Collection View DataSource
-
-Now that you have an array of ```userPosts``` you can implement the required ```UICollectionViewDataSource``` functions to display the posts, and update the Header View with the current user.
-
-
 ##### View Hierarchy Details
 
-1. When we set up the View Hierarchy in Part 1, you may have created a segue from the Profile View to the Post Detail View. If so, Delete that segue. Create/Recreate it from the collection view cell in ```Main.storyboard```.
-2.  The profile view is displayed within a Navigation Controller when accessed through the User List / Search View, but MAY not when accessed as the third tab in our ```UITabBarController```. If not, add a ```UINavigationController```, set the ```ProfileViewController``` as it's root view controller, and update the ```UITabBarController``` relationship segue to point to the ```UINavigationController```.
+
+
 3. Update the ```viewDidLoad``` function to check ```self.user``` for nil, if it is, assign the current user to the value.
 
 ##### Enable Profile Editing for Current User
@@ -146,26 +136,9 @@ Build functionality for the user to update their profile using the Login/Signup 
 
 Update the Login / Signup View to support updating a ```User```.
 
-1. Open the ```LoginSignupViewController.swift``` file.
-2. Add a ```ViewMode``` case 'Edit'.
-3. Update the ```fieldsAreValid``` calculated property so that the ```.Edit``` validates the presence of text in the ```usernameField```.
-    * note: this is the only field we need to validate as it is the only required method. (email and password will be hidden, bio and url are optional)
-4. Add an optional ```user``` property.
-5. Update the ```actionButtonTapped``` function to add a case for ```.Edit``` that uses the ```UserController``` to update the user with the current values and handles success or failure by dismissing the view or presenting a validation alert.
-6. Add a ```updateWithUser``` function.
-7. Implement the function to set ```self.user```, set the ```ViewMode``` to ```.Edit```.
-8. Update the ```updateViewBasedOnMode``` function for the new mode.
 
 Update the Profile View Controller to support Editing
 
-1. Open the Profile View Controller scene in ```Main.storyboard```.
-2. Add a ```UIBarButtonItem``` to the navigation bar. Use system item 'Edit'. Set to disabled.
-    * note: You may need to add a ```UINavigationItem```. 
-3. Add a modal presentation segue from the 'Edit' button to the Login/Signup View with ```toEditProfile``` identifier
-4. Implement the ```prepareForSegue``` by checking the segue identifier, capturing the destination view controller, and updating with the user.
-5. Override the ```viewDidAppear``` to update the user from Firebase and reload the view with that data.
-    * note: Since our view for UserController.userForIdentifier always returns our first mock user, you may get some funky results when going to this view by clicking on a different user.
-6. In the ```viewDidLoad```, where you check if user is nil, after setting the user property to currentUser, enable the bar button item.
 
 Consider how you could modify these steps to be more efficient in relying on network requests.
 

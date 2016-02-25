@@ -11,6 +11,7 @@ import UIKit
 enum ViewMode {
     case SignUp
     case LogIn
+    case Edit
 }
 
 class LoginSignupViewController: UIViewController {
@@ -24,6 +25,7 @@ class LoginSignupViewController: UIViewController {
     @IBOutlet weak var actionButton: UIButton!
     
     var mode: ViewMode = .SignUp
+    var user: User?
     
 
     
@@ -36,7 +38,9 @@ class LoginSignupViewController: UIViewController {
             case .LogIn:
                 guard let email = emailTextField.text, let password = passwordTextField.text else { return false }
                 return !email.isEmpty && !password.isEmpty
-                
+            case .Edit:
+                guard let user = usernameTextField.text else { return false }
+                return !user.isEmpty
             }
         }
     }
@@ -61,7 +65,7 @@ class LoginSignupViewController: UIViewController {
             case .LogIn:
                 UserController.authenticateUser(emailTextField.text!, password: passwordTextField.text!, completion: { (wasSuccesful, user) -> Void in
                     if wasSuccesful {
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.dismissViewControllerAnimated(true, completion: nil)
                         UserController.sharedInstance.currentUserVar = user
                     } else {
                         self.createAlert()
@@ -71,12 +75,21 @@ class LoginSignupViewController: UIViewController {
             case .SignUp:
                 UserController.createUser(emailTextField.text!, password: passwordTextField.text!, bio: bioTextField.text, url: URLTextField.text, completion: { (wasSuccesful, user) -> Void in
                     if wasSuccesful {
-                        self.navigationController?.popViewControllerAnimated(true)
+                        self.dismissViewControllerAnimated(true, completion: nil)
                         UserController.sharedInstance.currentUserVar = user
                     } else {
                         self.createAlert()
                     }
                     
+                })
+            case .Edit:
+                let bio = bioTextField.text ?? nil
+                UserController.updateUser(UserController.sharedInstance.currentUserVar!, username: usernameTextField.text!, bio: bio, completion: { (wasSuccesful) -> Void in
+                    if wasSuccesful {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    } else {
+                        self.createAlert()
+                    }
                 })
             }
         } else {
@@ -96,9 +109,18 @@ class LoginSignupViewController: UIViewController {
             URLTextField.hidden = true
             actionButton.setTitle("Sign In", forState: .Normal)
             
-        case .SignUp :
+        case .SignUp:
             actionButton.setTitle("Sign Up", forState: .Normal)
+        
+        case .Edit:
+            emailTextField.hidden = true
+            passwordTextField.hidden = true
+            actionButton.setTitle("Save", forState: .Normal)
+            guard let user = user else { return }
+            usernameTextField.text = user.username
+            bioTextField.text = user.bio
         }
+        
         
     }
     
@@ -116,11 +138,21 @@ class LoginSignupViewController: UIViewController {
         case .LogIn:
             title = "Invalid Login"
             message = "Check Credentials"
+        case .Edit:
+            title = "Invalid Change"
+            message = "Check Updated Parameters"
         }
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let alertAction = UIAlertAction(title: "Try Again", style: .Default, handler: nil)
         alertController.addAction(alertAction)
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Update With Functions
+    
+    func updateWithUser(user: User) {
+        self.user = user
+        self.mode = .Edit
     }
     
 }

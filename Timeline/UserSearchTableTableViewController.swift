@@ -101,8 +101,7 @@ class UserSearchTableTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "toProfileFromSearchResults" {
-            let profileView = segue.destinationViewController as? ProfileViewController
-            _ = profileView?.view
+            guard let profileView = segue.destinationViewController as? ProfileViewController else { return }
             let cell = sender as! UITableViewCell
             var selectedUser: User
             
@@ -117,7 +116,7 @@ class UserSearchTableTableViewController: UITableViewController {
                 selectedUser = users[usersIndexPath.row]
             }
             
-            profileView?.user = selectedUser
+            profileView.user = selectedUser
         }
     }
     
