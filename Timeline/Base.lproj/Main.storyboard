@@ -107,6 +107,9 @@
                                 <segment title="Friends"/>
                                 <segment title="Add Friends"/>
                             </segments>
+                            <connections>
+                                <action selector="selectIndexChanged:" destination="gbB-l8-pJg" eventType="valueChanged" id="hYR-IS-DU4"/>
+                            </connections>
                         </segmentedControl>
                     </navigationItem>
                     <connections>

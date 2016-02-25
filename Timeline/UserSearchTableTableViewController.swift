@@ -25,27 +25,33 @@ class UserSearchTableTableViewController: UITableViewController {
     }
     
     enum ViewMode: Int {
-        case Friends
-        case All
-    }
-    
-    @IBOutlet weak var modeSegmentedControl: UISegmentedControl!
-    
-    var usersDataSource: [User] {
-        get {
-            switch mode {
-                case .Friends:
-                return UserController.followedByUser(UserController.sharedInstance.currentUserVar!, completion: { (users) -> Void in
-                    return users
+        case Friends = 0
+        case All = 1
+        
+        func users(completion: (users: [User]) -> Void) {
+            switch self {
+            case .Friends:
+                UserController.followedByUser(UserController.sharedInstance.currentUserVar!, completion: { (users) -> Void in
+                    guard let users = users else { return }
+                    completion(users: users)
+                })
+            case .All:
+                UserController.fetchAllUsers({ (users) -> Void in
+                    completion(users: users)
                 })
             }
         }
     }
+    
+    @IBOutlet weak var modeSegmentedControl: UISegmentedControl!
+    
+    var usersDataSource: [User] = []
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateViewBasedOnMode()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -89,7 +95,7 @@ class UserSearchTableTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
@@ -99,31 +105,20 @@ class UserSearchTableTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+    
+    // MARK: - Action Button Functions
+    
+    @IBAction func selectIndexChanged(sender: UISegmentedControl) {
+        updateViewBasedOnMode()
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    
+    func updateViewBasedOnMode() {
+        self.mode.users { (users) -> Void in
+            self.usersDataSource = users
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.tableView.reloadData()
+            })
+        }
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
