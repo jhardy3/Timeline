@@ -21,7 +21,7 @@ class UserController {
     
     // Returns a User in a completion block based on a query with passed in identifier
     static func userForIdentifier(identifier: String, completion: (user: User?) -> Void) {
-        
+            completion(user: mockUsers().first)
     }
     
     // Returns all users in a completion block
@@ -32,17 +32,17 @@ class UserController {
     
     // Function allows a User to Follow another User
     static func followUser(user: User, completion: (wasSuccesful: Bool) -> Void) {
-        
+        completion(wasSuccesful: true)
     }
     
     // Alternatively unfollows a user
     static func unfollowUser(user: User, completion: (wasSuccesful: Bool) -> Void) {
-        
+        completion(wasSuccesful: true)
     }
     
     // Checks to see if a user is following another user
     static func userFollowsUser(userOne: User, userTwo: User, completion: (isFollowing: Bool) -> Void) {
-        
+        completion(isFollowing: true)
     }
     
     // Shows wh0 is is following a user
@@ -51,18 +51,18 @@ class UserController {
     }
     
     // Check to see if a user is actually relevant when loggin in
-    static func authenticateUser(email: String, password: String, completion: (wasSuccesful: Bool) -> Void) {
-        
+    static func authenticateUser(email: String, password: String, completion: (wasSuccesful: Bool, user: User?) -> Void) {
+        completion(wasSuccesful: true, user: mockUsers().first)
     }
     
     // Creates a new user if valid information inputed
-    static func createUser(email: String, password: String, bio: String?, url: String?, completion: (wasSuccesful: Bool) -> Void) {
-        
+    static func createUser(email: String, password: String, bio: String?, url: String?, completion: (wasSuccesful: Bool, user: User?) -> Void) {
+        completion(wasSuccesful: true, user: mockUsers().first)
     }
     
     // Updates the current User
     static func updateUser(user: User, username: String, bio: String?, completion: (wasSuccesful: Bool) -> Void) {
-        
+        completion(wasSuccesful: true)
     }
     
     // logs the current User out

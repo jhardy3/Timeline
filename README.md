@@ -69,36 +69,13 @@ Create a 'Like' model struct that will hold a username, and reference to the par
 
 ### ImageController
 
-
-5. Implement a mock response by returning a UIImage named "MockPhoto"
-6. Add a sample photo to the ```Assets.xcassets``` folder named ```MockPhoto``` for you to use as staged data.
-
 ### Black Diamonds
-
 
 ### Tests
 
-
 ## Part Two - Wire Up Views
 
-* build a reusable login/signup view controller
-* implement a collection view based master-detail interface
-* implement a search controller
-
-Build the login/signup view controller, the profile view, and the user list/search controller that will be used to list friends and search users to add as friends. Do not focus too much time on polishing the views. The purpose of wiring up view controllers is to get things functional.
-
-### Signup / Login Picker View
-
-This is the first view that the user will see of our application. We want it to briefly describe the app and present the option for the user to Sign Up or Log In. There are many ways to lay out this view. The steps below are simply one way to do so. Experiment with stack views and autolayout to get a pleasing view. Use the Storyboard Preview feature to see your changes on various device sizes.
-
 ##### Storyboard Setup
-
-1. Add a vertical stack view that will hold our labels and buttons, constrain it to the leading and trailing margins, 44 points from the top, and at least 225 points from the bottom.
-    * note: Because resizing a view based on keyboard presence is outside the scope of this project, we add a 225 point margin to the bottom to allow space for the keyboard.
-    * note: To keep the bottom of the ```UIStackView``` at least 225 points from the bottom, but allow it to be further if the content allows for it, adjust the priority of the bottom constraint to 750.
-2. Add a ```UILabel``` with the word 'Timeline' in big, bold text.
-3. Add a ```UILabel``` with a short description for the app in smaller text.
-4. Move your 'Sign Up' and 'Log In' buttons from Part 1 into the ```UIStackView``` and embed them in a horizontal stack view to place them side by side.
 
 We will implement the code for this view after setting up the Signup / Login View scene.
 
@@ -106,41 +83,11 @@ We will implement the code for this view after setting up the Signup / Login Vie
 
 Build a view to manage signup and login features for the application. The view will have two modes: Signup and Login. When in Signup mode, we will display all fields required to sign up a new user. When in Login mode, we will programmatically remove unnecessary fields. 
 
-1. Add a vertical stack view that will hold our labels and buttons, constrain it to the leading and trailing margins, 44 points from the top, and at least 225 points from the bottom.
-    * note: Because resizing a view based on keyboard presence is outside the scope of this project, we add a 225 point margin to the bottom to allow space for the keyboard.
-    * note: To keep the bottom of the ```UIStackView``` at least 225 points from the bottom, but allow it to be further if the content allows for it, adjust the priority of the bottom constraint to 750.
-2. Add a ```UITextField``` with placeholder text 'Username*'.
-3. Add a ```UITextField``` with placeholder text 'Email*'.
-4. Add a ```UITextField``` with placeholder 'Password*'.
-    * note: Password fields should be set to 'Secure Text Entry' so that text is obscured.
-5. Add a ```UITextField``` with placeholder 'Bio'.
-6. Add a ```UITextField``` with placeholder 'Website URL'.
-7. Add a ```UIButton``` with title 'Action'.
-    * note: The title of the button will be updated to 'Sign Up' or 'Log In' based on the mode.
 
 ##### Class Implementation
 
-You will create outlets to all required elements for the view. You will implement an enum ```ViewMode``` with ```.Signup``` and ```.Login``` cases. You will respond to the ```ViewMode``` to determine what fields to display, the title for the action button, text input validation, and action implementation. You will add a ```fieldsAreValid``` calculated property that provides a validation check on the text fields. You will respond to invalid fields or failed attempts to create or authenticate an account with an alert.
 
-1. Open the ```LoginSignupViewController.swift``` subclass of ```UIViewController``` and check that it is assigned to the associated scene in ```Main.storyboard```.
-2. Add outlets for the usernameTextField, emailTextField, passwordTextField, bioTextField, urlTextField, actionButton.
-3. Add a ```ViewMode``` enum with 'Login' and 'Signup' cases.
-4. Add a ```mode``` property of ```ViewMode``` type, we will switch on this property to determine functionality, give it a default value of ```.Signup```.
 
-Your view should follow the 'updateWith' pattern for updating the view elements with the details of the mode. 
-
-5. Add an ```updateViewBasedOnMode``` function
-6. Implement the 'updateWith' function to update all view elements to reflect the current mode.
-    * note: Use a switch to determine the mode. Leave all fields for .Signup, remove unnecessary fields for .Login (username, bio, url).
-    * note: Update the title of the 'Action' button.
-7. Call the ```updateViewBasedOnMode()``` function in the ```viewDidLoad()``` function.
-
-Add a calculated property that validates that there is text in the required text fields based on the mode.
-
-8. Add a calculated property named ```fieldsAreValid``` that returns a Bool.
-9. Implement the calculated property get by switching the mode, and returning true only if the required text fields are not empty.
-    * note: Email and Password are required for logging in. Username, e-mail, and password are required for registering.
-10. Add an ```actionButtonTapped``` action from the Action button.
 11. Implement the ```actionButtonTapped``` by checking the fields are valid, switching on the mode, calling the applicable ```UserController``` functions, and responding to the closure parameters. Successful authentication or registration should dismiss the view controller. Unsuccessful authentication or registration should present an alert telling the user to try again.
     * note: Because you are presenting multiple alert views with potentially slightly different wording, consider creating a ```presentValidationAlertWithTitle(title: String, message: String)``` and implementing it to create and present the alert
 

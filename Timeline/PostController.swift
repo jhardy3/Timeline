@@ -23,12 +23,12 @@ class PostController {
     
     // Adds an image and a post
     static func addPost(image: String, caption: String?, completion: (wasSuccessful: Bool, post: Post?) -> Void) {
-        
+        completion(wasSuccessful: true, post: mockPosts().first)
     }
     
     // Get's a post when given a valid identifier
     static func postFromIdentifier(identifier: String, completion: (post: Post?) -> Void) {
-        
+        completion(post: mockPosts().first)
     }
     
     // Grabs all posts of a particular User
@@ -43,21 +43,22 @@ class PostController {
     
     // Adds a comment to a post as typed out by another User
     static func addCommentWithTextToPost(text: String, post: Post, completion: (success: Bool, post: Post?) -> Void) {
-        
+        completion(success: true, post: mockPosts().first)
     }
     
     // Deletes a comment as specified by User
-    static func deleteComment(comment: Comment, completiong: (success: Bool, post: Post?) -> Void) {
+    static func deleteComment(comment: Comment, completion: (success: Bool, post: Post?) -> Void) {
+        completion(success: true, post: mockPosts().first)
     }
     
     // attributes a like object to a post as specified by User
     static func addLikeToPost(post: Post, completion: (success: Bool, post: Post?) -> Void) {
-        
+        completion(success: true, post: mockPosts().first)
     }
     
     // deletes a like as specified by user
     static func deleteLike(like: Like, completion: (success: Bool, post: Post?) -> Void) {
-        
+        completion(success: true, post: mockPosts().first)
     }
     
     // returns an array of posts in a specific order

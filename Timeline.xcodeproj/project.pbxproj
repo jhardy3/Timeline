@@ -125,13 +125,8 @@
 			children = (
 				01E3FC241BE92C7600187536 /* AppDelegate.swift */,
 				01E3FC281BE92C7600187536 /* Main.storyboard */,
-				74F592B01C7D022D00C85351 /* User.swift */,
-				74F592B21C7D047F00C85351 /* Comment.swift */,
-				74F592B41C7D05BA00C85351 /* Like.swift */,
-				74F592B61C7D06D200C85351 /* Post.swift */,
-				74F592B81C7D089600C85351 /* UserController.swift */,
-				74F592BA1C7D12E400C85351 /* PostController.swift */,
-				74F592BC1C7D19C600C85351 /* ImageController.swift */,
+				74B9D51F1C7E67FD00A3AD4D /* Model */,
+				74B9D5201C7E680900A3AD4D /* Controller */,
 				74F592AF1C7D01BC00C85351 /* View Controllers */,
 				01E3FC2B1BE92C7600187536 /* Assets.xcassets */,
 				01E3FC2D1BE92C7600187536 /* LaunchScreen.storyboard */,
@@ -156,6 +151,27 @@
 				01E3FC461BE92C7700187536 /* Info.plist */,
 			);
 			path = TimelineUITests;
+			sourceTree = "<group>";
+		};
+		74B9D51F1C7E67FD00A3AD4D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				74F592B01C7D022D00C85351 /* User.swift */,
+				74F592B21C7D047F00C85351 /* Comment.swift */,
+				74F592B41C7D05BA00C85351 /* Like.swift */,
+				74F592B61C7D06D200C85351 /* Post.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		74B9D5201C7E680900A3AD4D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				74F592B81C7D089600C85351 /* UserController.swift */,
+				74F592BA1C7D12E400C85351 /* PostController.swift */,
+				74F592BC1C7D19C600C85351 /* ImageController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 		74F592AF1C7D01BC00C85351 /* View Controllers */ = {
