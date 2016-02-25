@@ -10,20 +10,21 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    @IBOutlet weak var collectionView: UICollectionView!
     var user: User?
     var userPosts = [Post]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     func updateBasedOnUser() {
         guard let user = user else { return }
         PostController.postsForUser(user) { (posts) -> Void in
@@ -31,7 +32,7 @@ class ProfileViewController: UIViewController {
             self.userPosts = posts
         }
     }
-
+    
 }
 
 extension ProfileViewController: ProfileHeaderCollectionReusableViewDelegate {
@@ -43,11 +44,11 @@ extension ProfileViewController: ProfileHeaderCollectionReusableViewDelegate {
         UserController.userFollowsUser(UserController.sharedInstance.currentUserVar!, userTwo: user) { (isFollowing) -> Void in
             if isFollowing {
                 UserController.unfollowUser(user, completion: { (wasSuccesful) -> Void in
-                    
+                    self.user = user
                 })
             } else {
                 UserController.followUser(user, completion: { (wasSuccesful) -> Void in
-                    
+                    self.user = user
                 })
             }
         }
@@ -70,7 +71,17 @@ extension ProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("postCell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("postCell", forIndexPath: indexPath) as! ImageCollectionViewCell
+        let post = userPosts[indexPath.row].identifier ?? ""
+        cell.updateWithImageIdentifier(post)
         return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        let profileHeaderView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "profileHeadCell", forIndexPath: indexPath) as? ProfileHeaderCollectionReusableView
+        guard let user = user else { return profileHeaderView!}
+        profileHeaderView?.updateWithUser(user)
+        profileHeaderView?.delegate = self
+        return profileHeaderView!
     }
 }

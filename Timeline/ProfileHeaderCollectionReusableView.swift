@@ -40,11 +40,13 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
     @IBAction func urlButtonTapped(sender: UIButton) {
         guard let delegate = delegate else { return }
         delegate.userTappedURLButton()
+        delegate.loadView()
     }
     
     @IBAction func followActionButtonTapped(sender: UIButton) {
         guard let delegate = delegate else { return }
         delegate.userTappedFollowActionButton()
+        delegate.loadView()
     }
 }
 

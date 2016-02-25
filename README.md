@@ -133,17 +133,6 @@ Build a check on the ```UserController.currentUser()``` to present the Login / S
 
 Now that you have an array of ```userPosts``` you can implement the required ```UICollectionViewDataSource``` functions to display the posts, and update the Header View with the current user.
 
-4. Implement the ```numberOfItemsInSection``` by returning the count of ```userPosts```.
-5. Implement the ```cellForItemAtIndexPath``` by dequeing a ```ImageCollectionViewCell```, capturing the ```Post``` at the indexPath, and calling the ```updateWithImageIdentifier``` function with the correct endpoint.
-6. Implement the ```viewForSupplementaryElementOfKind``` by dequeing the ```ProfileHeaderCollectionReusableView``` and calling the ```updateWithUser``` with the Profile View's ```User``` property.
-
-Use the ```ProfileHeaderReusableViewDelegate``` to implement functionality for the 'URL' and 'Follow' buttons
-
-7. Adopt the ```ProfileHeaderReusableViewDelegate``` protocol on the ```ProfileViewController```.
-8. Implement the ```userTappedURLButton``` function to initialize and present a ```SafariViewController``` to the profile url.
-9. Implement the ```userTappedFollowActionButton``` to use the ```UserController``` to determine if the current user follows the user, appropriately follow or unfollow the user, and update the view with the updated user.
-    * note: You have to define a static function ```unfollowUser``` (on UserController) that takes a user and a completion closure with a success Boolean parameter.
-10. Update the ```viewForSupplementaryElementOfKind``` datasource function to set the ```ProfileHeaderCollectionReusableView``` delegate.
 
 ##### View Hierarchy Details
 
