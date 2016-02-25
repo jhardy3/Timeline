@@ -10,9 +10,18 @@ import UIKit
 
 class LoginSignupChoiceViewController: UIViewController {
 
+    override func viewWillAppear(animated: Bool) {
+        if UserController.sharedInstance.currentUserVar == nil {
+            
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        print("HelloO")
+    
         // Do any additional setup after loading the view.
     }
 
@@ -20,6 +29,16 @@ class LoginSignupChoiceViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let loginOrSignupView = segue.destinationViewController as? LoginSignupViewController
+        if segue.identifier == "toLogin" {
+            loginOrSignupView?.mode = .LogIn
+        } else {
+            loginOrSignupView?.mode = .SignUp
+        }
+    }
+    
     
 
     /*

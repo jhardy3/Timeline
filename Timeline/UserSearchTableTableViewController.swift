@@ -9,10 +9,44 @@
 import UIKit
 
 class UserSearchTableTableViewController: UITableViewController {
+    
+    
+    var mode: ViewMode {
+        get {
+            switch modeSegmentedControl.selectedSegmentIndex.hashValue {
+            case 0:
+                return .Friends
+            case 1:
+                return .All
+            default:
+                return .All
+            }
+        }
+    }
+    
+    enum ViewMode: Int {
+        case Friends
+        case All
+    }
+    
+    @IBOutlet weak var modeSegmentedControl: UISegmentedControl!
+    
+    var usersDataSource: [User] {
+        get {
+            switch mode {
+                case .Friends:
+                return UserController.followedByUser(UserController.sharedInstance.currentUserVar!, completion: { (users) -> Void in
+                    return users
+                })
+            }
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

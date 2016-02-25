@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Cx5-IH-Euc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KXz-qX-iND">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -109,6 +109,9 @@
                             </segments>
                         </segmentedControl>
                     </navigationItem>
+                    <connections>
+                        <outlet property="modeSegmentedControl" destination="sTt-wc-vwy" id="bjO-Kv-8Bs"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="adP-WI-CbT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -164,7 +167,7 @@
         <!--Timeline-->
         <scene sceneID="ZbC-tj-tIG">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qMo-wv-N9t" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="timeline" automaticallyAdjustsScrollViewInsets="NO" id="qMo-wv-N9t" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Timeline" id="zDh-Cy-Iza"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="W05-jR-fN0">
@@ -183,7 +186,7 @@
         <!--Login Signup Choice View Controller-->
         <scene sceneID="Hmu-B3-nBt">
             <objects>
-                <viewController id="DGh-Vj-ahN" customClass="LoginSignupChoiceViewController" customModule="Timeline" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="signInOrUp" id="DGh-Vj-ahN" customClass="LoginSignupChoiceViewController" customModule="Timeline" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FCK-Nh-V0e"/>
                         <viewControllerLayoutGuide type="bottom" id="iWx-QU-abJ"/>
@@ -202,14 +205,14 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="300" height="242"/>
                                                 <state key="normal" title="Sign Up"/>
                                                 <connections>
-                                                    <segue destination="5f1-a2-1ZW" kind="show" id="YUE-vg-JvL"/>
+                                                    <segue destination="5f1-a2-1ZW" kind="show" identifier="toSignUp" id="YUE-vg-JvL"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZfH-bv-cyg">
                                                 <rect key="frame" x="300" y="0.0" width="300" height="242"/>
                                                 <state key="normal" title="Login"/>
                                                 <connections>
-                                                    <segue destination="5f1-a2-1ZW" kind="show" id="2HJ-XJ-0oI"/>
+                                                    <segue destination="5f1-a2-1ZW" kind="show" identifier="toLogin" id="2HJ-XJ-0oI"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -262,7 +265,7 @@
                         <segue destination="qMo-wv-N9t" kind="relationship" relationship="viewControllers" id="2HP-Fb-YNv"/>
                         <segue destination="hyt-nu-169" kind="relationship" relationship="viewControllers" id="1j9-hO-pVZ"/>
                         <segue destination="H2b-kf-cRO" kind="relationship" relationship="viewControllers" id="hxa-RG-jW4"/>
-                        <segue destination="Cx5-IH-Euc" kind="presentation" id="YKL-iE-7F9"/>
+                        <segue destination="Cx5-IH-Euc" kind="presentation" identifier="modalSignUpOrIn" id="YKL-iE-7F9"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hdB-0F-lOa" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -357,7 +360,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bun-o9-bjf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1544" y="1218"/>
+            <point key="canvasLocation" x="1544" y="1244"/>
         </scene>
         <!--Profile-->
         <scene sceneID="I4a-aH-JL5">
@@ -416,7 +419,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="23i-yV-x8y"/>
+        <segue reference="ElU-af-jmo"/>
         <segue reference="YUE-vg-JvL"/>
     </inferredMetricsTieBreakers>
 </document>

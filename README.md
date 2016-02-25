@@ -86,38 +86,18 @@ Build a view to manage signup and login features for the application. The view w
 
 ##### Class Implementation
 
-
-
-11. Implement the ```actionButtonTapped``` by checking the fields are valid, switching on the mode, calling the applicable ```UserController``` functions, and responding to the closure parameters. Successful authentication or registration should dismiss the view controller. Unsuccessful authentication or registration should present an alert telling the user to try again.
-    * note: Because you are presenting multiple alert views with potentially slightly different wording, consider creating a ```presentValidationAlertWithTitle(title: String, message: String)``` and implementing it to create and present the alert
-
 ##### Present the View if No Current User
 
 Build a check on the ```UserController.currentUser()``` to present the Login / Signup Picker scene if there is no user logged in.
 
-1. In the ```TimelineTableViewController.swift``` file, we will build the check since this will be the first view of the app.
-2. Override ```viewWillAppear()```.
-3. Implement the function to check if ```UserController.currentUser()``` is nil, if it is, perform the modal segue from the ```UITabBarController``` to the Login / Signup Picker scene, otherwise, load the timeline for the current user (set a property of an array of Posts).
-    * note: Consider adding a check to see if the view already has posts, if so, skip reloading the view.
-4. Test the sequence by returning ```nil``` from the ```UserController.currentUser()``` function.
-
 ##### Setting the Mode from the Choice Scene
 
-1. Open the ```LoginSignupChoiceViewController.swift``` file and check that it is assigned to the associated scene in ```Main.storyboard```.
-2. Add a ```prepareForSegue()``` function, use the segue identifier to determine what mode to set on the destination view controller.
-    * note: You may need to add segue identifiers in ```Main.storyboard```.
 3. Test your different modes to verify they work as expected, that the view is presented, and that the view is dismissed when the user successfully logs in or registers.
 
 ### User Search Table View
 
 The User Search Table View will be used for any list of multiple users, and provide search functionality for that list. The default view will have the option to view current friends, or all users of the app, and search between both. Each user cell should segue to the profile view for that user.
 
-1. Open the ```UserSearchTableViewController.swift``` subclass of ```UITableViewController``` and check that it is assigned to the associated scene in ```Main.storyboard```.
-2. Add a ```usersDataSource``` property as an empty array of Users.
-    * note: This array will hold the users that should be displayed in the table view. Only friends when displaying the friends list, all users when adding a friend.
-3. Add a an outlet ```modeSegmentedControl``` for the segmented control.
-4. Add a ```ViewMode``` Int type enum with 'Friends' and 'All' cases.
-5. Add a calculated ```mode``` property of ```ViewMode``` type, return a ViewMode initialized with a rawValue from the selected segment index on ```modeSegmentedControl```.
 
 Add functionality to the ViewMode that you can use to fetch the correct set of ```User``` objects. We will use this in our ```updateViewForMode``` to set the ```usersDataSource``` array with either friends, or all users. 
 

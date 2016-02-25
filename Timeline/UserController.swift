@@ -13,7 +13,7 @@ class UserController {
     
     // MARK: - Properties
     
-    var currentUser: User! = User(username: "JakeOfUtah", identifier: nil, bio: nil, url: nil)
+    var currentUserVar: User?
     
     static let sharedInstance = UserController()
     
@@ -63,6 +63,11 @@ class UserController {
     // Updates the current User
     static func updateUser(user: User, username: String, bio: String?, completion: (wasSuccesful: Bool) -> Void) {
         completion(wasSuccesful: true)
+    }
+    
+    // Just a test
+    static func currentUserTest() -> User? {
+        return nil
     }
     
     // logs the current User out

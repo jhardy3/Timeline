@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum ViewMode {
+    case SignUp
+    case LogIn
+}
+
 class LoginSignupViewController: UIViewController {
     
     
@@ -20,10 +25,7 @@ class LoginSignupViewController: UIViewController {
     
     var mode: ViewMode = .SignUp
     
-    enum ViewMode {
-        case SignUp
-        case LogIn
-    }
+
     
     var fieldsAreValid: Bool {
         get {
@@ -59,9 +61,8 @@ class LoginSignupViewController: UIViewController {
             case .LogIn:
                 UserController.authenticateUser(emailTextField.text!, password: passwordTextField.text!, completion: { (wasSuccesful, user) -> Void in
                     if wasSuccesful {
-                        self.navigationController?.dismissViewControllerAnimated(true, completion: { () -> Void in
-                            
-                        })
+                        self.navigationController?.popViewControllerAnimated(true)
+                        UserController.sharedInstance.currentUserVar = user
                     } else {
                         self.createAlert()
                     }
@@ -71,12 +72,15 @@ class LoginSignupViewController: UIViewController {
                 UserController.createUser(emailTextField.text!, password: passwordTextField.text!, bio: bioTextField.text, url: URLTextField.text, completion: { (wasSuccesful, user) -> Void in
                     if wasSuccesful {
                         self.navigationController?.popViewControllerAnimated(true)
+                        UserController.sharedInstance.currentUserVar = user
                     } else {
                         self.createAlert()
                     }
                     
                 })
             }
+        } else {
+            self.createAlert()
         }
     }
     
@@ -87,7 +91,7 @@ class LoginSignupViewController: UIViewController {
     func updateViewBasedOnMode() {
         switch mode {
         case .LogIn:
-            emailTextField.hidden = true
+            usernameTextField.hidden = true
             bioTextField.hidden = true
             URLTextField.hidden = true
             actionButton.setTitle("Sign In", forState: .Normal)
