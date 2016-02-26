@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Add Photo Table View Controller-->
@@ -38,17 +40,60 @@
         <scene sceneID="XAC-6d-JmI">
             <objects>
                 <tableViewController id="Xwr-fn-cNk" customClass="TimeLineTableViewController" customModule="Timeline" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sbi-5l-2q2">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="459" sectionHeaderHeight="28" sectionFooterHeight="28" id="sbi-5l-2q2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="timelineCell" id="D5D-2w-Dkb">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="timelineCell" rowHeight="459" id="D5D-2w-Dkb">
+                                <rect key="frame" x="0.0" y="92" width="600" height="459"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D5D-2w-Dkb" id="U0m-3B-tyE">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="458.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MockPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="zOc-of-gbS">
+                                            <rect key="frame" x="110" y="40" width="380" height="380"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="zOc-of-gbS" secondAttribute="height" multiplier="1:1" id="Tye-to-FKv"/>
+                                                <constraint firstAttribute="width" constant="380" id="n8v-LF-UNT"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVv-O6-Dcd">
+                                            <rect key="frame" x="110" y="11" width="138" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLA-tj-VHu">
+                                            <rect key="frame" x="120" y="422" width="42" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6GR-74-5WO">
+                                            <rect key="frame" x="438" y="422" width="42" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="6GR-74-5WO" secondAttribute="bottom" constant="8.5" id="FFa-vA-Ovu"/>
+                                        <constraint firstItem="YLA-tj-VHu" firstAttribute="leading" secondItem="zOc-of-gbS" secondAttribute="leading" constant="10" id="KyE-E9-Ay4"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="YLA-tj-VHu" secondAttribute="bottom" constant="8.5" id="NYh-iq-rUa"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="6GR-74-5WO" secondAttribute="trailing" constant="102" id="aWT-lZ-VyO"/>
+                                        <constraint firstItem="6GR-74-5WO" firstAttribute="trailing" secondItem="zOc-of-gbS" secondAttribute="trailing" constant="-10" id="dao-Ao-26q"/>
+                                        <constraint firstItem="tVv-O6-Dcd" firstAttribute="top" secondItem="U0m-3B-tyE" secondAttribute="topMargin" constant="3" id="f2F-HS-lmX"/>
+                                        <constraint firstItem="zOc-of-gbS" firstAttribute="centerX" secondItem="U0m-3B-tyE" secondAttribute="centerX" id="fVN-aE-GO1"/>
+                                        <constraint firstItem="tVv-O6-Dcd" firstAttribute="leading" secondItem="zOc-of-gbS" secondAttribute="leading" constant="10" id="ikD-us-bHM"/>
+                                        <constraint firstItem="zOc-of-gbS" firstAttribute="centerY" secondItem="U0m-3B-tyE" secondAttribute="centerY" id="rbF-zk-jV6"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="aWT-lZ-VyO"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <segue destination="TKi-s0-NHB" kind="show" id="ZZH-2u-ZWH"/>
@@ -542,6 +587,9 @@
             <point key="canvasLocation" x="60" y="442"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="MockPhoto" width="495" height="334"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hxa-RG-jW4"/>
         <segue reference="ElU-af-jmo"/>

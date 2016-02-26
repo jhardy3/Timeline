@@ -188,17 +188,6 @@ Add functionality for the current user to log out.
 
 
 
-## Part Three - Wire Up Views (contd)
-
-* implement a complex UITableView with multiple cell types and sections
-* implement multiple custom table view cells with delegate pattern
-* use an image picker to access and work with photos
-* use an accessory editing view as a text field and send button
-
-### Timeline View
-
-The Timeline view is the most important view of the application. This is where people will see and like the photos. Each cell will represent one post and will display the photo, user, number of comments, and number of likes. Be creative but follow sound design principles in how you display each post in the cell.
-
 ##### Custom Post Cell
 
 1. Design the cell in ```Main.storyboard``` to display the image prominently, include labels for the number of likes and number of comments.
@@ -312,6 +301,38 @@ Follow the same pattern you used for the ```self.image``` property by capturing 
 * make the post view a live view by observing the post
 
 ### Tests
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Part Four - Implement Controllers
