@@ -33,6 +33,7 @@ class ProfileHeaderCollectionReusableView: UICollectionReusableView {
                 } else {
                     self.followButton.setTitle("Follow", forState: .Normal)
                 }
+                self.delegate?.collectionView.reloadData()
             })
         }
         

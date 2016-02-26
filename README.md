@@ -195,17 +195,8 @@ Add functionality for the current user to log out.
 
 Build a Post Detail View that displays the post. It should display the photo and the comments. The view should also allow the user to post comments or add likes to the post. 
 
-14. Implement the ```addCommentTapped``` function to present a ```UIAlertController``` with a textfield, an 'Add Comment' action, and a 'Cancel' action.
-15. Implement the 'Add Comment' action to use the ```PostController``` to add a comment, update the view with the updated post in the completion closure.
-16. Implement the ```numberOfRowsInSection``` by returning the count of comments on ```self.post```.
-17. Implement the ```cellForRowAtIndexPath``` by dequeing a ```PostCommentTableViewCell```, capturing the ```Comment```, and calling the ```updateWithComment(comment: Comment)``` function on the cell.
 
 ##### Segues to Post Detail View
-
-1. Add a ```prepareForSegue``` function to the ```TimelineTableViewController.swift``` file
-2. Implement the function by capturing the ```indexPath```, selected ```Post```, ```destinationViewController```, and updating the ```destinationViewController``` with the selected post.
-3. Add a ```prepareForSegue``` function to the ```ProfileViewController.swift``` file.
-4. Implement he function by capturing the ```indexPath```, selected ```Post```, ```destinationViewController```, and updating the ```destinationViewController``` with the selected post.
 
 ### Add Post View
 

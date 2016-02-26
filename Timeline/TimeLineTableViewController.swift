@@ -79,5 +79,14 @@ class TimeLineTableViewController: UITableViewController {
             })
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "toDetailView" {
+            let destinationView = segue.destinationViewController as! PostDetailTableViewController
+            guard let index = self.tableView.indexPathForSelectedRow else { return }
+            destinationView.post = self.posts[index.row]
+        }
+        
+    }
 
 }
