@@ -206,24 +206,9 @@ You will use a button as the header view to allow the user to select a photo. Wh
 
 You will use a static cell with a text field for capturing the caption for the post, and a 'Submit' button as the footer for the table view.
 
-1. Update the table view to use static cells.
-2. Add a button as the header for the table view titled 'Add Photo'.
-    * note: Update the title and font size, make the view larger so that the user can see the photo.
-3. Remove any additional table view cells, add a text field that fills the cell, provide context to the user with placeholder text.
-4. Add a 'Submit' button as the footer to the table view.
-5. Add a 'Cancel' button as the left bar button item.
-6. Add IBOutlets for the 'Add Photo' button and caption text field.
-
 ##### Add Photo
 
 Add a property for storing the image for the post, present a ```UIImagePickerController```, and update the 'Add Photo' button to display the image.
-
-7. Add an optional ```self.image``` property to capture the selected image for the post.
-8. Add an IBAction ```addPhotoButtonTapped``` to the ```AddPhotoTableViewController.swift``` file.
-9. Implement the function by instantiating a ```UIImagePickerController```, setting it's delegate, presenting an alert to the user to choose 'Photo Library' or 'Camera', setting the ```sourceType``` of the picker controller, and presenting it.
-9. Adopt the ```UINavigationControllerDelegate``` and ```UIImagePickerControllerDelegate``` protocols.
-10. Implement the ```UIImagePickerControllerDelegate``` function ```didFinishPickingMediaWithInfo``` to dismiss the picker view controller, capture the selected image into the ```self.image``` property, and updating the background image of the photo button.
-
 ##### Capture the Caption
 
 Follow the same pattern you used for the ```self.image``` property by capturing the value when the user stops editing the caption text field.
