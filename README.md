@@ -190,53 +190,11 @@ Add functionality for the current user to log out.
 
 ##### Custom Post Cell
 
-1. Design the cell in ```Main.storyboard``` to display the image prominently, include labels for the number of likes and number of comments.
-    * note: Consider displaying the photo as the full background of the cell, use a Stack View to place the labels.
-    * note: Consider the Content Mode and choose one that will work for most images, you can address this later in the polish portion.
-2. Add a ```PostTableViewCell.swift``` subclass of ```UITableViewCell``` and assign it as the class for the cell on our Timeline scene.
-3. Add outlets for the ```postImageView```, ```likesLabel``` and ```commentsLabel```.
-4. Add a ```updateWithPost(post: Post)``` function.
-5. Implement the function by assigning values to the labels and using the ImageController to fetch the image, assign the result to the image view in the completion closure.
-
-##### Timeline DataSource
-
-1. Open the ```TimelineTableViewController.swift``` subclass of ```UITableViewController``` and check that it is assigned to the associated scene in ```Main.storyboard``` 
-2. Add a variable ```posts``` that will hold the posts for the Timeline.
-3. Add a function ```loadTimelineForUser``` that takes a ```User``` as a parameter.
-4. Implement the function by using the ```PostController``` to fetch timeline for the user, setting the results to ```self.posts```, and reloading the view when completed.
-5. Update the ```viewDidLoad()``` function to call ```loadTimelineForUser``` if there is a current user.
-    * note: Keep the previously written code, we still need to present the Login view if there is no current user.
-6. Implement the ```numberOfRowsInSection``` by returning the count of posts.
-7. Implement the ```cellForRowAtIndexPath``` by dequeing a ```PostTableViewCell```, capturing the ```Post```, and calling the ```updateWithPost(post: Post)``` function on the cell.
-
-##### Pull to Refresh
-
-Implement 'Pull to Refresh' functionality on your ```TimelineTableViewController```
-
-1. Select the scene in the Document Outline in ```Main.storyboard```.
-2. Enable refreshing in the Attributes Inspector under Table View Controller.
-3. Add an IBAction ```userRefreshedTable``` for the Refresh Control now visible in your Document Outline.
-4. Implement the action by fetching an updated timeline from the ```PostController```.
-    * note: You must tell the refresh control to ```endRefreshing``` when the view is done loading.
 
 ### Post Detail View
 
 Build a Post Detail View that displays the post. It should display the photo and the comments. The view should also allow the user to post comments or add likes to the post. 
 
-1. Open the ```PostDetailTableViewController.swift``` subclass of ```UITableViewController``` and check that it is assigned to the associated scene in ```Main.storyboard```. 
-2. Add a Header view to the ```UITableView``` with a similar layout to the ```PostTableViewCell```.
-    * note: Some photos may expand beyond this header view, choose the 'Clip Subviews' option in the Attribute Inspector.
-3. Add a subtitle prototype cell with a Username label and Comment label that will display the details of each comment.
-4. Add a button as a footer view titled 'Add Comment'.
-5. Add a ```UINavigationItem``` with a Bar Button Item titled 'Like'.
-6. Add IBOutlets for the ```headerImageView```, ```likesLabel```, and ```commentsLabel```.
-7. Add a property of ```Post?``` to the view controller.
-8. Add a function ```updateBasedOnPost()```.
-9. Implement the function by updating the ```likesLabel```, ```commentsLabel```, using the ```ImageController``` to set the ```headerImageView``` and reloading the table view.
-10. Call ```updateBasedOnPost()``` in ```viewDidLoad()```.
-11. Add an IBAction ```likeTapped``` from the 'Like' button.
-12. Implement the ```likeTapped``` function by using the ```PostController``` to add a ```Like``` to the post, update the view with the updated post in the completion closure.
-13. Add an IBAction ```addCommentTapped``` from the 'Add Comment' button.
 14. Implement the ```addCommentTapped``` function to present a ```UIAlertController``` with a textfield, an 'Add Comment' action, and a 'Cancel' action.
 15. Implement the 'Add Comment' action to use the ```PostController``` to add a comment, update the view with the updated post in the completion closure.
 16. Implement the ```numberOfRowsInSection``` by returning the count of comments on ```self.post```.

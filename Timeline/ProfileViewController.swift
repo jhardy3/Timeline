@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ProfileViewController: UIViewController {
     
@@ -76,7 +77,10 @@ extension ProfileViewController: ProfileHeaderCollectionReusableViewDelegate {
     }
     
     func userTappedURLButton() {
+        guard let url = user?.url, let cookedURL = NSURL(string: url) else { return }
+        let svc = SFSafariViewController(URL: cookedURL)
         
+        self.presentViewController(svc, animated: true, completion: nil)
         
     }
 }

@@ -79,7 +79,7 @@ class UserController {
     static func mockUsers() -> [User] {
         return [
         
-            User(username: "JakeOfUtah", identifier: nil, bio: nil, url: nil),
+            User(username: "JakeOfUtah", identifier: nil, bio: "Hi", url: "Http://twitter.com"),
             User(username: "nilCoalescer", identifier: nil, bio: nil, url: nil),
             User(username: "xXsupsXx", identifier: nil, bio: nil, url: nil)
             

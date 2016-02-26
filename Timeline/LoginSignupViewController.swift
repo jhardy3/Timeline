@@ -118,7 +118,12 @@ class LoginSignupViewController: UIViewController {
             actionButton.setTitle("Save", forState: .Normal)
             guard let user = user else { return }
             usernameTextField.text = user.username
-            bioTextField.text = user.bio
+            if let bio = user.bio {
+                bioTextField.text = bio
+            }
+            if let url = user.url {
+                URLTextField.text = url
+            }
         }
         
         
