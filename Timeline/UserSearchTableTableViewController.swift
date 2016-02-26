@@ -115,7 +115,6 @@ class UserSearchTableTableViewController: UITableViewController {
                 guard let usersIndexPath = tableView.indexPathForCell(cell) else { return }
                 selectedUser = users[usersIndexPath.row]
             }
-            
             profileView.user = selectedUser
         }
     }
