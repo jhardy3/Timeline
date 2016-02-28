@@ -45,7 +45,15 @@ class PostController {
     static func addCommentWithTextToPost(text: String, post: Post, completion: (success: Bool, post: Post?) -> Void) {
         var post = Post(imageEndPoint: "-K1l4125TYvKMc7rcp5e", username: "JakeOfUtah", caption: nil, comments: [Comment(username: "JakeOfUtah", postIdentifier: "1")], likes: [Like(username: "s", postIdentifier: "s")], identifier: nil)
         let comment = Comment(username: "Hihihi", postIdentifier: "0")
+        let comment1 = Comment(username: "Hihihi", postIdentifier: "0")
+        let comment2 = Comment(username: "Hihihi", postIdentifier: "0")
+        let comment3 = Comment(username: "Hihihi", postIdentifier: "0")
+        let comment4 = Comment(username: "Hihihi", postIdentifier: "0")
         post.comments.append(comment)
+        post.comments.append(comment1)
+        post.comments.append(comment2)
+        post.comments.append(comment3)
+        post.comments.append(comment4)
         completion(success: true, post: post)
     }
     

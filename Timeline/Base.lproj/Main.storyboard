@@ -325,16 +325,22 @@
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <accessibility key="accessibilityConfiguration">
+                                <accessibilityTraits key="traits" notEnabled="YES" header="YES"/>
+                            </accessibility>
                             <constraints>
                                 <constraint firstItem="i4c-QJ-Qao" firstAttribute="leading" secondItem="c9V-cn-wCR" secondAttribute="leading" constant="148" id="8ag-mj-KhR"/>
                                 <constraint firstAttribute="bottom" secondItem="hE8-Ah-o4X" secondAttribute="bottom" constant="7" id="9N6-d4-GWP"/>
+                                <constraint firstItem="i4c-QJ-Qao" firstAttribute="top" secondItem="c9V-cn-wCR" secondAttribute="top" constant="27" id="Cax-BX-3Zo"/>
                                 <constraint firstItem="dTe-6q-GtM" firstAttribute="leading" secondItem="i4c-QJ-Qao" secondAttribute="leading" id="FLg-lq-RbS"/>
                                 <constraint firstItem="i4c-QJ-Qao" firstAttribute="centerX" secondItem="c9V-cn-wCR" secondAttribute="centerX" id="GOs-MC-Vzy"/>
                                 <constraint firstAttribute="trailing" secondItem="i4c-QJ-Qao" secondAttribute="trailing" constant="148" id="J55-0v-oN9"/>
                                 <constraint firstItem="i4c-QJ-Qao" firstAttribute="centerY" secondItem="c9V-cn-wCR" secondAttribute="centerY" id="NBQ-pt-pCI"/>
                                 <constraint firstAttribute="bottom" secondItem="i4c-QJ-Qao" secondAttribute="bottom" constant="36" id="NId-iS-bTN"/>
                                 <constraint firstItem="i4c-QJ-Qao" firstAttribute="top" secondItem="c9V-cn-wCR" secondAttribute="top" constant="13" id="XBn-io-2ag"/>
+                                <constraint firstAttribute="trailing" secondItem="i4c-QJ-Qao" secondAttribute="trailing" constant="150" id="agp-YW-WBe"/>
                                 <constraint firstItem="hE8-Ah-o4X" firstAttribute="trailing" secondItem="i4c-QJ-Qao" secondAttribute="trailing" id="eiv-Hf-xmJ"/>
+                                <constraint firstItem="i4c-QJ-Qao" firstAttribute="leading" secondItem="c9V-cn-wCR" secondAttribute="leading" constant="150" id="jZe-AC-eeq"/>
                                 <constraint firstAttribute="bottom" secondItem="dTe-6q-GtM" secondAttribute="bottom" constant="7" id="yMg-Tt-cB9"/>
                             </constraints>
                             <variation key="default">
