@@ -45,230 +45,6 @@ Students who complete this project independently are able to:
 
 Follow the development plan included with the project to build out the basic view hierarchy, basic implementation of local model objects and model object controllers, and build staged data to lay a strong foundation for the rest of the project.
 
-### View Hierarchy
-
-
-    
-### Implement Model
-
-#### User
-
-#### Comment
-
-#### Like
-
-Create a 'Like' model struct that will hold a username, and reference to the parent ```Post```.
-
-#### Post
-
-### Model Controller API
-
-### UserController
-
-### PostController
-
-### ImageController
-
-### Black Diamonds
-
-### Tests
-
-## Part Two - Wire Up Views
-
-##### Storyboard Setup
-
-We will implement the code for this view after setting up the Signup / Login View scene.
-
-### Signup / Login View
-
-Build a view to manage signup and login features for the application. The view will have two modes: Signup and Login. When in Signup mode, we will display all fields required to sign up a new user. When in Login mode, we will programmatically remove unnecessary fields. 
-
-
-##### Class Implementation
-
-##### Present the View if No Current User
-
-Build a check on the ```UserController.currentUser()``` to present the Login / Signup Picker scene if there is no user logged in.
-
-##### Setting the Mode from the Choice Scene
-
-3. Test your different modes to verify they work as expected, that the view is presented, and that the view is dismissed when the user successfully logs in or registers.
-
-### User Search Table View
-
-##### Search Controller Implementation
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##### Segue to the Profile View
-
-
-### Profile View
-
-
-
-##### Collection View Section Header
-
-##### View Hierarchy Details
-
-
-
-3. Update the ```viewDidLoad``` function to check ```self.user``` for nil, if it is, assign the current user to the value.
-
-##### Enable Profile Editing for Current User
-
-Build functionality for the user to update their profile using the Login/Signup View we built earlier.
-
-Update the Login / Signup View to support updating a ```User```.
-
-
-Update the Profile View Controller to support Editing
-
-
-Consider how you could modify these steps to be more efficient in relying on network requests.
-
-##### Logging Out
-
-Add functionality for the current user to log out.
-
-1. In the ```ProfileHeaderCollectionReusableView```, use the follow button as a logout button if the user is equal to the currentUser. Set the title appropriately.
-2. In the implementation of the ```userTappedFollowActionButton()``` delegate method, check if the user is equal to the currentUser. If so, log out the current user and send the user to the first view controller in the tab bar. If not, it should do the appropriate follow/unfollow action.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##### Custom Post Cell
-
-
-### Post Detail View
-
-Build a Post Detail View that displays the post. It should display the photo and the comments. The view should also allow the user to post comments or add likes to the post. 
-
-
-##### Segues to Post Detail View
-
-### Add Post View
-
-Build a view for creating and submitting a post. The view should have a way to select a photo using the ```UIImagePickerController```, adding a caption, and submitting. You will use a static table view with a header and footer to create this form. This is not the only way to build this view, but is an appropriate use for a static ```UITableView```.
-
-You will use a button as the header view to allow the user to select a photo. When the user has chosen a photo, display it using the button's background image property and set the title to an empty string.
-
-You will use a static cell with a text field for capturing the caption for the post, and a 'Submit' button as the footer for the table view.
-
-##### Add Photo
-
-Add a property for storing the image for the post, present a ```UIImagePickerController```, and update the 'Add Photo' button to display the image.
-##### Capture the Caption
-
-Follow the same pattern you used for the ```self.image``` property by capturing the value when the user stops editing the caption text field.
-
-11. Add an optional ```caption``` property to capture the text when the user finishes updating the cell.
-12. Adopt the ```UITextFieldDelegate``` protocol, set the delegate of the text field, and implement the ```textFieldShouldReturn``` function to set the ```caption``` property and ```resignFirstResponder```.
-
-##### Submitting the Post
-
-13. Add an IBAction ```submitButtonTapped``` from the 'Submit' button.
-14. Implement the function by checking for a value in ```self.image```, if there is an image, use the ```PostController``` to add a post with the image and caption, if there isn't an image, present an alert to the user asking them to check and try again.
-15. Handle the ```PostController``` unsuccessfully uploading the image by presenting an alert to the user asking them to try again.
-
-##### Cancel Button
-
-16. Add an IBAction ```cancelButtonTapped``` from the 'Cancel' button.
-17. Implement the function by dismissing the view controller.
-
-
-### Black Diamonds
-
-* fix the content mode of the 'Add Photo' button to use .ScaleAspectFill
-* add 'double tap to like' functionality to the cell
-* make the post view a live view by observing the post
-
-### Tests
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Part Four - Implement Controllers
 
 * use Firebase as a backend for storing and pulling model objects
@@ -279,28 +55,59 @@ It is time to implement actual funtionality for our controller objects. You will
 
 ### Add Firebase to the Project
 
-Install the Firebase iOS SDK by manually including the ```Firebase.framework``` and its dependencies in the project.
 
-1. Open the [iOS Alternative Setup](https://www.firebase.com/docs/ios/alternate-setup.html) documentation.
-2. Follow the steps to download the framework and add dependencies to the project.
-    * note: As of Xcode 7.1, .dylib is now .tbd when referencing dependencies and linked frameworks.
-3. Create a new App in Firebase with a unique subdomain of your choice to use for the project.
 
-### FirebaseController
 
-Create a reusable ```FirebaseController``` class that will provide basic fetching features. If written correctly, the only reference to your current project will be the ```base``` property that references the URL on Firebase for your application. Everything else will be migratable and reusable in other projects you build. Add to your ```FirebaseController``` over time with the most reused features.
 
-1. Create a new ```FirebaseController.swift``` class and define a new ```FirebaseController``` class.
-2. Import Firebase.
-3. Add a new class property ```base``` that returns a ```Firebase``` from your URL.
-4. Add a static function ```dataAtEndpoint(endpoint: String, completion: (data:AnyObject?) -> Void)``` that will fetch data from an endpoint and return it via completion closure.
-5. Implement the function to create a new Firebase reference with the endpoint string, observe a single event, and run the completion closure when the data has returned.
-    * note: Check to see if the data is NSNull before running the completion. This will determine what you pass to the closure's parameter.
-6. Add a static ```observeDataAtEndpoint(endpoint: String, completion: (data: AnyObject?) -> Void)``` that will observe data from and endpoint and run the completion closure each time the data at that endpoint changes.
-7. Implement the function to create a new Firebase reference with the endpoint string, observe an event, and run the completion closure when the data has returned.
-    * note: Check to see if the data is NSNull before running the completion.
 
-Note that these functions are not necessary, but will save you two lines of code each time you want to fetch or observe data in Firebase. You can build your ```FirebaseController``` over time to be more useful to you as you recognize patterns of what you do repeatedly in Firebase that can be abstracted to this helper class.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##### Define the Protocol
 
@@ -482,6 +289,55 @@ The ```PostController``` is a crucial piece to the application. Do your best to 
     * note: This function is particularly useful in the ```fetchTimeline``` function that appends ```Post``` objects from different users, this function sorts them back into order by time.
 
 * note: You should not expect to see a great difference in your app functionallity today.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Part Five - Implement Controllers
 
