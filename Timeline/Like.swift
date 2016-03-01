@@ -20,7 +20,7 @@ struct Like: Equatable, FirebaseType {
     var identifier: String?
     
     var endpoint: String {
-        return "/user/\(self.identifier)"
+        return "/posts/\(self.identifier)/likes/"
     }
     
     var jsonValue: [String : AnyObject] {

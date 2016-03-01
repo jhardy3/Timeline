@@ -152,24 +152,6 @@ Example:
 }
 ```
 
-1. Add private String keys for "username", "imageEndpoint", "caption", "comments", and "likes".
-2. Conform to the ```FirebaseType``` protocol.
-3. Assign a value 'posts' for ```endpoint```.
-    * note: ```Post``` objects are not saved under any other object, so it has it's own independent endpoint.
-4. Implement the ```jsonValue``` calculated property by returning a json dictionary with the ```username```, ```imageEndpoint```, ```comments```, ```likes```, and optionally add the ```caption``` if it exists.
-    * note: Map the Comments and Likes to dictionaries (ex. ```CommentsKey: self.comments.map({$0.jsonValue})```).
-5. Implement the failable initializer by guarding against the required properties, setting any optional properties, and assigning the identifier.
-    * note: Map the Comment and Like dictionaries to initialized model objects, use flatMap() to filter out any nil optional initialized objects.
-    * note: Consider the included sample solution below, break each line down, look in the documentation to understand what each part is doing.
-
-```
-if let commentDictionaries = json[CommentsKey] as? [String: AnyObject] {
-    self.comments = commentDictionaries.flatMap({Comment(json: $0.1 as! [String : AnyObject], identifier: $0.0)})
-} else {
-    self.comments = []
-}
-```
-
 ##### User
 
 Example:
@@ -186,26 +168,14 @@ Example:
 }
 ```
 
-1. Add private String keys for "username", "bio", and "url".
-2. Assign a value 'users' for ```endpoint```.
-3. Implement the ```jsonValue``` calculated property by returning a json dictionary with the ```username```, optionally include the ```bio``` and ```url```, if they exist.
-4. Implement the failable initializer by guarding against the required properties, setting any optional properties, and assigning the identifier.
-
-
 ### PostController Implementation
 
-The ```PostController``` is a crucial piece to the application. Do your best to write the implementation for each function with only the description here. Sample solution code is available, but should only be used after trying your best to implement each function. Each function takes parameters and returns others, do your best to translate the inputs into the outputs. 
-
-1. Implement the ```addPost``` function to use the ```ImageController``` to upload an image, use the closure identifier to initialize a post, save it, and call the completion closure.
-2. Implement the ```postFromIdentifer``` function to use the ```FirebaseController``` to fetch data for the post (ex. ```"posts/\(identifier)"```), unwrap the data, initialize the post, and call the completion closure.
 3. Implement the ```postsForUser``` function to create a ```Firebase``` reference query to all posts where "username" is equal to the username passed into the function, unwrap the optional data, flatMap the dictionaries into ```Post``` objects, order the posts, and call the completion closure.
     * note: Watch out for the auto closure completion Xcode creates for Firebase observe functions, it oftentimes will choose a different syntax than works.
     * note: The master dictionary will contain child dictionaries that map to Posts. Use tuple accessors to correctly grab the identifier and child dictionary to map, ask for help if you do not understand the syntax.
-4. Implement the ```deletePost``` function by deleting the post.
-5. Implement the ```addCommentWithTextToPost``` to check for a postIdentifier (if none, save the post, thereby getting a postIdentifier), initialize a ```Comment```, save the comment, fetch the updated post using the identifier, and calling the completion closure with the newly fetched ```Post```.
-6. Implement the ```deleteComment``` function to delete the comment, fetch the updated post using the identifier, and calling the completion closure with the newly fetched ```Post```.
-7. Implement the ```addLikeToPost``` to check for a postIdentifier, initialize a ```Like```, save the like, fetch the updated post using the identifier, and calling the completion closure with the newly fetched ```Post```.
+
 8. Implement the ```deleteLike``` function to delete the like, fetch the updated post using the identifier, and calling the completion closure with the newly fetched ```Post```.
+
 9. Implement the ```orderPosts``` function to return a sorted array using the identifier of the ```Post``` object.
     * note: Firebase creates the unique identifiers by using a timestamp, so sorting by the identifier sorts by timestamp.
     * note: This function is particularly useful in the ```fetchTimeline``` function that appends ```Post``` objects from different users, this function sorts them back into order by time.

@@ -59,8 +59,12 @@ struct Post: Equatable, FirebaseType {
             let imageEndPoint = json[kImageEndpoint] as? String
             else { return nil }
         
-        if let comments = json[comments] as? [String : AnyObject] {
-            self.comments = comments.flatMap { }
+        if let comments = json[kComments] as? [[String : AnyObject]] {
+            self.comments = comments.flatMap {Comment(json: $0, identifier: identifier) } 
+        }
+        
+        if let likes = json[kLikes] as? [[String : AnyObject]] {
+            self.likes = likes.flatMap { Like(json: $0, identifier: identifier) }
         }
         
     
