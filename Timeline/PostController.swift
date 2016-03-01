@@ -43,7 +43,11 @@ class PostController {
     
     // Grabs all posts of a particular User
     static func postsForUser(user: User, completion: (posts: [Post]?) -> Void) {
-//        let posts = FirebaseController.firebase.
+        FirebaseController.firebase.childByAppendingPath("posts").queryOrderedByChild("username").queryEqualToValue(user.username).observeSingleEventOfType(.Value, withBlock: { (snap) -> Void in
+            guard let posts = snap.value as? [String : AnyObject] else { completion(posts: nil) ; return }
+            let mappedPosts = posts.flatMap { Post(json: $0.1 as! [String : AnyObject], identifier: $0.0) }
+            completion(posts: mappedPosts)
+        })
     }
     
     // Deletes a particular post as specified
@@ -94,22 +98,19 @@ class PostController {
     
     // deletes a like as specified by user
     static func deleteLike(like: Like, completion: (success: Bool, post: Post?) -> Void) {
-        completion(success: true, post: mockPosts().first)
+        guard let identifier = like.identifier else { completion(success: false, post: nil) ; return }
+        like.delete()
+        postFromIdentifier(identifier) { (post) -> Void in
+            guard let post = post else { completion(success: false, post: nil) ; return }
+            completion(success: true, post: post)
+        }
     }
     
     // returns an array of posts in a specific order
     static func orderPosts(posts: [Post]) -> [Post] {
-        return []
+        return posts.sort {$0.0.identifier > $0.1.identifier }
     }
     
-    static func mockPosts() -> [Post] {
-        return [
-            
-            Post(imageEndPoint: "-K1l4125TYvKMc7rcp5e", username: "JakeOfUtah", caption: nil, comments: [Comment(username: "JakeOfUtah", postIdentifier: "1")], likes: [], identifier: nil),
-            Post(imageEndPoint: "-K1l4125TYvKMc7rcp5e", username: "exMachina", caption: nil, comments: [], likes: [], identifier: nil),
-            Post(imageEndPoint: "-K1l4125TYvKMc7rcp5e", username: "xXsupsXx", caption: nil, comments: [], likes: [], identifier: nil)
-            
-        ]
-    }
+
     
 }

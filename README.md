@@ -174,8 +174,6 @@ Example:
     * note: Watch out for the auto closure completion Xcode creates for Firebase observe functions, it oftentimes will choose a different syntax than works.
     * note: The master dictionary will contain child dictionaries that map to Posts. Use tuple accessors to correctly grab the identifier and child dictionary to map, ask for help if you do not understand the syntax.
 
-8. Implement the ```deleteLike``` function to delete the like, fetch the updated post using the identifier, and calling the completion closure with the newly fetched ```Post```.
-
 9. Implement the ```orderPosts``` function to return a sorted array using the identifier of the ```Post``` object.
     * note: Firebase creates the unique identifiers by using a timestamp, so sorting by the identifier sorts by timestamp.
     * note: This function is particularly useful in the ```fetchTimeline``` function that appends ```Post``` objects from different users, this function sorts them back into order by time.
