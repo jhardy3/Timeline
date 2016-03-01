@@ -9,7 +9,13 @@
 import Foundation
 
 
-struct Post: Equatable {
+struct Post: Equatable, FirebaseType {
+    
+    private let kCaption = "caption"
+    private let kUsername = "username"
+    private let kImageEndpoint = "imageEndPoint"
+    private let kLikes = "likes"
+    private let kComments = "comments"
     
     // MARK: - Properties
     
@@ -20,11 +26,49 @@ struct Post: Equatable {
     var likes = [Like]()
     var identifier: String?
     
+    var endpoint: String {
+        return "/posts/"
+    }
+    
+    var jsonValue: [String : AnyObject] {
+        get {
+            
+            var json: [String : AnyObject] =
+            [
+                kUsername : username,
+                kComments : comments.map { $0.jsonValue } ,
+                kLikes : likes.map { $0.jsonValue },
+                kImageEndpoint : imageEndPoint
+            ]
+            if let caption = caption as? AnyObject {
+                json.updateValue(caption, forKey: kCaption)
+            }
+            return json
+        }
+    }
+    
     init(imageEndPoint: String, username: String, caption: String?, comments: [Comment], likes: [Like], identifier: String?) {
         self.imageEndPoint = imageEndPoint
         self.username = username
         self.caption = nil
         self.identifier = nil
+    }
+    
+    init?(json: [String : AnyObject], identifier: String) {
+        guard let username = json[kUsername] as? String,
+            let imageEndPoint = json[kImageEndpoint] as? String
+            else { return nil }
+        
+        if let comments = json[comments] as? [String : AnyObject] {
+            self.comments = comments.flatMap { }
+        }
+        
+    
+    
+    
+        self.caption = json[kCaption] as? String
+        self.username = username
+        self.imageEndPoint = imageEndPoint
     }
     
 }

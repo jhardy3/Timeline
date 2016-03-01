@@ -111,90 +111,12 @@ It is time to implement actual funtionality for our controller objects. You will
 
 ##### Define the Protocol
 
-The ```FirebaseController.swift``` file is the perfect place to add more Firebase specific code that will help you write the rest of the application. Write a ```FirebaseType``` protocol that will normalize and enforce the way model objects are built to save and pull from Firebase. Before writing the protocol, consider everything that you would require a model object to have to work seamlessly with Firebase.
-
-There are 4 or 5 required properties or functions, depending on your specific implementation, that you will want to include:
-
-* ```identifier```
-* ```endpoint```
-* ```secondaryEndpoints``` (depends on implementation and architecture)
-* ```jsonValue```
-* ```init?(json: [String: AnyObject])``` (because of the way we've structured our data in this specific app, we will use ```init?(json: [String: AnyObject], identifier: String)```)
-
-With these 5 required properties/functions, we can implement a couple of great features with default protocol implementations. You will implement two:
-
-* ```save()```
-* ```delete()```
-
-1. Add a protocol definition for ```FirebaseType``` at the bottom of the ```FirebaseController.swift``` file.
-2. Add an optional gettable and settable ```identifier:[String]?``` property.
-    * note: The identifier will be used to identify the object on Firebase, and when nil, tells us that the object has not yet been saved to Firebase.
-3. Add a gettable ```endpoint: String``` property.
-    * note: The endpoint will determine where the object will be saved on Firebase.
-4. Add a gettable ```jsonValue: [String, AnyObject]``` property.
-    * note: A JSON representation of the object that will be saved to Firebase.
-5. Add a faillable ```init?(json: [String: AnyObject] identifier: String)``` function.
-    * note: Any instance initialized with json will come from Firebase, and will require an identifier so we know it already exists on Firebase.
-6. Add a ```mutating func save()``` function.
-7. Add a ```func delete()``` function .
 
 ##### Extend the Protocol
-
-Using protocol extensions in Swift, we can require functions and provide default implementations for those functions for any type that conforms to the protocol.
-
-1. Define an extension to FirebaseType at the bottom of the ```FirebaseController.swift``` file.
-2. Add a mutating ```save()``` function.
-3. Implement the function by checking for an identifier, if there is an identifier, instantiate a Firebase reference to the endpoint with that identifier, otherwise instantiate a Firebase reference to the endpoint with a ```.childByAutoID()```, and assign the identifier to the key of that base, once you have a reference to where the object should be saved, use the ```updateChildValues()``` function with the ```jsonValue``` of the object.
-4. Add a ```delete()``` function.
-5. Implement the function by instantiating a Firebase reference to the object, use the ```removeValue()``` function to delete it from Firebase.
 
 
 ### Adopt the FirebaseType Protocol
 
-Adopt the ```FirebaseType``` protocol in each of your model objects. Use the included sample JSON to build your ```jsonValue``` calculated properties and ```init?(json: [String: AnyObject], identifier: String)``` initializers.
-
-##### Comment
-
-Example:
-
-```
-"-K28xPOXBBXdCrFx-EAY" : {
-    "post" : "-K25Fj8qrMAtxXG3QCSn",
-    "text" : "I'd love to cliff dive off that.",
-    "username" : "calebhicks"
-}
-```
-
-1. Add private String keys for "post", "username", and "text".
-2. Assign a value for a computed ```endpoint``` property. Look at the example:
-
-```
-var endpoint: String {
-    
-    return "/posts/\(self.postIdentifier)/comments/"
-}
-```
-
-Saving the ```jsonValue``` to this endpoint will put it under the post that it belongs to on Firebase.
-
-3. Implement the ```jsonValue``` calculated property by returning a json dictionary with the ```postIdentifier```, ```user```, and ```text```.
-4. Implement the failable initializer by guarding against the required properties, setting any optional properties, and assigning the identifier.
-
-##### Like
-
-Example:
-
-```
-"-K28OeV3MmD0l9DbNufW" : {
-    "post" : "-K25Fj8qrMAtxXG3QCSn",
-    "username" : "calebhicks"
-}
-```
-.
-1. Add private String keys for "post" and "username".
-2. Assign a value for a computed ```endpoint``` property that saves the ```Like``` to the post, similar to the ```endpoint``` for ```Comment```.
-3. Implement the ```jsonValue``` calculated property by returning a json dictionary with the ```postIdentifier``` and ```username```.
-4. Implement the failable initializer by guarding against the required properties, setting any optional properties, and assigning the identifier.
 
 
 ##### Post
