@@ -18,7 +18,36 @@ class PostController {
     
     // Grabs timeline data for a given user
     static func fetchTimeLineForUser(user: User, completion: (posts: [Post]) -> Void) {
-        completion(posts: mockPosts())
+        var allPosts = [Post]()
+        let group = dispatch_group_create()
+        
+        dispatch_group_enter(group)
+        guard let user = UserController.sharedInstance.currentUserVar else { completion(posts: []) ; return }
+        UserController.followedByUser(user) { (users) -> Void in
+            if let users = users {
+                for user in users {
+                    postsForUser(user, completion: { (posts) -> Void in
+                        if let posts = posts {
+                            allPosts += posts
+                            dispatch_group_leave(group)
+                        }
+                    })
+                }
+            }
+            
+            dispatch_group_enter(group)
+            postsForUser(user, completion: { (posts) -> Void in
+                if let posts = posts {
+                    allPosts += posts
+                    dispatch_group_leave(group)
+                }
+            })
+        }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
+            completion(posts: orderPosts(allPosts))
+        }
+        
     }
     
     // Adds an image and a post
@@ -33,12 +62,12 @@ class PostController {
     
     // Get's a post when given a valid identifier
     static func postFromIdentifier(identifier: String, completion: (post: Post?) -> Void) {
-            FirebaseController.dataAtEndPoint("posts/\(identifier)") { (data) -> Void in
-                guard let data = data as? [String : AnyObject] else { completion(post: nil) ; return }
-                let post = Post(json: data, identifier: identifier)
-                completion(post: post)
+        FirebaseController.dataAtEndPoint("posts/\(identifier)") { (data) -> Void in
+            guard let data = data as? [String : AnyObject] else { completion(post: nil) ; return }
+            let post = Post(json: data, identifier: identifier)
+            completion(post: post)
         }
-    
+        
     }
     
     // Grabs all posts of a particular User
@@ -111,6 +140,6 @@ class PostController {
         return posts.sort {$0.0.identifier > $0.1.identifier }
     }
     
-
+    
     
 }

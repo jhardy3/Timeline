@@ -81,202 +81,13 @@ It is time to implement actual funtionality for our controller objects. You will
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##### Define the Protocol
-
-
-##### Extend the Protocol
-
-
-### Adopt the FirebaseType Protocol
-
-
-
-##### Post
-
-Example: 
-
-```
-"-K25Fj8qrMAtxXG3QCSn" : {
-  "username" : "hansolo",
-  "imageEndpoint" : "-K25Fj8p2ArUMz3awt3T",
-  "comments" : {
-    "-K28xPOXBBXdCrFx-EAY" : {
-      "post" : "-K25Fj8qrMAtxXG3QCSn",
-      "text" : "I'd love to cliff dive off that.",
-      "username" : "calebhicks"
-    },
-    "-K28xzlhs8ArmgB6bcCB" : {
-      "post" : "-K25Fj8qrMAtxXG3QCSn",
-      "text" : "Who wants in?",
-      "username" : "calebhicks"
-    }
-  },
-  "likes" : {
-    "-K28OeV3MmD0l9DbNufW" : {
-      "post" : "-K25Fj8qrMAtxXG3QCSn",
-      "username" : "calebhicks"
-    },
-    "-K28xx1BC5pnQNXDxym6" : {
-      "post" : "-K25Fj8qrMAtxXG3QCSn",
-      "username" : "calebhicks"
-    }
-  }
-}
-```
-
-##### User
-
-Example:
-
-```
-"17c014cb-5cc1-4884-977b-471482d9e484" : {
-    "bio" : "I wear fancy pants. ",
-    "follows" : {
-        "c6c2fbe1-c86c-4b47-a78b-5d991c8f19fb" : true,
-        "f8270303-6656-453a-a2e6-8c5eeece73b7" : true
-    },
-    "url" : "http://calebhicks.com/",
-    "user" : "calebhicks"
-}
-```
-
-### PostController Implementation
-
-3. Implement the ```postsForUser``` function to create a ```Firebase``` reference query to all posts where "username" is equal to the username passed into the function, unwrap the optional data, flatMap the dictionaries into ```Post``` objects, order the posts, and call the completion closure.
-    * note: Watch out for the auto closure completion Xcode creates for Firebase observe functions, it oftentimes will choose a different syntax than works.
-    * note: The master dictionary will contain child dictionaries that map to Posts. Use tuple accessors to correctly grab the identifier and child dictionary to map, ask for help if you do not understand the syntax.
-
-9. Implement the ```orderPosts``` function to return a sorted array using the identifier of the ```Post``` object.
-    * note: Firebase creates the unique identifiers by using a timestamp, so sorting by the identifier sorts by timestamp.
-    * note: This function is particularly useful in the ```fetchTimeline``` function that appends ```Post``` objects from different users, this function sorts them back into order by time.
-
-* note: You should not expect to see a great difference in your app functionallity today.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Part Five - Implement Controllers
 
 * upload photos to Firebase as base64 strings
 * asynchronously download photos to display
 * authenticate users anonymously or via e-mail
 
-### PostController
-
-The ```PostController``` has one more function we need to implement, ```fetchTimelineForUser```.  First, you will need to get all of the user the current user is following. Second, for each of those users, you'll need to fetch their posts. Third, you should fetch all of the current users posts. (If the user uploads an image, they should see it on their own timeline.) Use [dispatch groups](http://commandshift.co.uk/blog/2014/03/19/using-dispatch-groups-to-wait-for-multiple-web-services/) to be notfied when all of your asyncronous calls are complete.
-
-1. Implement the ```fetchTimelineForUser()``` by first calling ```followedByUser```. In the completion closure, create an array the will hold all the posts and a dispatch group.
-2. Enter the dispatch group. Call ```postForUser``` to fetch the current users posts. Once the post have been fetched leave the dispatch group.
-3. For each user that is being followed, enter the dispatch group, fetch their posts, then once the posts have been returned, leave the dispatch group.
-4. When the dispatch group notifies it has completed, order the posts and call the completion closure. 
-
 ### UserController Implementation
-
-The ```UserController``` is a crucial piece to the application. Do your best to write the implementation for each function with only the description here. Sample solution code is available, but should only be used after trying your best to implement each function. Each function takes parameters and returns others, do your best to translate the inputs into the outputs. 
-
-1. Add a private ```kUser``` for use with ```NSUserDefaults``` and the ```currentUser``` calculated property.
-2. Implement the ```currentUser``` computed property to use a ```get``` and ```set``` to push and pull from ```NSUserDefaults```. ```get``` should guard against the ```uid``` on the ```FirebaseController.base.authData``` property and a userDictionary from ```NSUserDefaults```, and return a User created from the results. ```set``` should unwrap the ```newValue```, if it exists, save it to ```NSUserDefaults```, if it does not, remove it from ```NSUserDefaults```.
-
-```
-var currentUser: User! {
-    get {
-        
-        guard let uid = FirebaseController.base.authData?.uid,
-            let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(UserKey) as? [String: AnyObject] else {
-                
-                return nil
-        }
-        
-        return User(json: userDictionary, identifier: uid)
-    }
-    
-    set {
-        
-        if let newValue = newValue {
-            NSUserDefaults.standardUserDefaults().setValue(newValue.jsonValue, forKey: UserKey)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(UserKey)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-}
-
-```
 
 3. Implement the ```userForIdentifier``` function to fetch data at the endpoint for the user, unwrap the data, initialize the ```User```, and call the completion.
 4. Implement the ```fetchAllUsers``` function to fetch all data at the "users" endpoint, unwrap the optional data, flatMap the dictionaries into ```User``` objects, and call the completion closure.
@@ -290,6 +101,17 @@ var currentUser: User! {
 10. Implement the ```createUser``` function to ```createUser``` on the ```FirebaseController.base``` reference, if you succeed, initialize a ```User``` object using the ```uid``` and other parameters, save the user, then authenticate the user to log the user in.
 11. Implement the ```updateUser``` function to initialize a new ```User``` object with the same identifier and new parameters, save the user (which will overwrite the updated values on the server), fetch a new copy of the user using the identifier, set the ```currentUser``` property on ```sharedController```, and call the completion closure.
 12. Implement the ```logoutCurrentUser``` function to ```unAuth``` on the ```FirebaseController.base``` reference, set the ```currentUser``` property on the ```sharedController``` to nil.
+
+
+
+
+
+
+
+
+
+
+
 
 ### ImageController Implementation
 

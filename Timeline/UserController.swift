@@ -11,9 +11,29 @@ import Foundation
 
 class UserController {
     
+    private let kUser = "user"
+    
     // MARK: - Properties
     
-    var currentUserVar: User? = nil
+    var currentUserVar: User! {
+        get {
+            guard let uid = FirebaseController.firebase.authData.uid, let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String : AnyObject] else {
+                return nil
+            }
+            return User(json: userDictionary, identifier: uid)
+        }
+        
+        set {
+            if let user = newValue {
+                NSUserDefaults.standardUserDefaults().setValue(user.jsonValue, forKey: kUser)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            } else {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kUser)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+            
+        }
+    }
     
     static let sharedInstance = UserController()
     
