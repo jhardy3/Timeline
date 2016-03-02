@@ -88,17 +88,8 @@ It is time to implement actual funtionality for our controller objects. You will
 * authenticate users anonymously or via e-mail
 
 ### UserController Implementation
+ 
 
-3. Implement the ```userForIdentifier``` function to fetch data at the endpoint for the user, unwrap the data, initialize the ```User```, and call the completion.
-4. Implement the ```fetchAllUsers``` function to fetch all data at the "users" endpoint, unwrap the optional data, flatMap the dictionaries into ```User``` objects, and call the completion closure.
-5. Implement the ```followUser``` function to create a Firebase reference to the endpoint for followed users ("/users/\(sharedController.currentUser.identifier!)/follows/\(user.identifier!)"), set ```true``` to that endpoint, and call the completion closure.
-6. Implement the ```unfollowUser``` function to do remove the value at the followed user endpoint.
-7. Implement the ```userFollowsUser``` function to check if there is a value at the followed user endpoint and call the appropriate completion closure.
-8. Implement the ```followedByUser``` function to fetch identifiers for all followed users, unwrap the optional data, create a holding array for users, loop through the identifiers to call the ```userForIdentifier``` function, append each user, and call a completion closure.
-    * note: This implementation may be inefficient and potentially cause issues. Consider how you could better approach this problem. Experiment with potential solutions.
-9. Implement the ```authenticateUser``` function to ```authUser``` on the ```FirebaseController.base``` reference, if you successfully authenticate, fetch the user using the identifier, and set the ```currentUser``` property on ```sharedController``` to the result.
-    * note: You will need to enable E-mail Authentication on your Firebase Dashboard for this to work.
-10. Implement the ```createUser``` function to ```createUser``` on the ```FirebaseController.base``` reference, if you succeed, initialize a ```User``` object using the ```uid``` and other parameters, save the user, then authenticate the user to log the user in.
 11. Implement the ```updateUser``` function to initialize a new ```User``` object with the same identifier and new parameters, save the user (which will overwrite the updated values on the server), fetch a new copy of the user using the identifier, set the ```currentUser``` property on ```sharedController```, and call the completion closure.
 12. Implement the ```logoutCurrentUser``` function to ```unAuth``` on the ```FirebaseController.base``` reference, set the ```currentUser``` property on the ```sharedController``` to nil.
 

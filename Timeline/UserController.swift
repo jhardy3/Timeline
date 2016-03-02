@@ -15,12 +15,14 @@ class UserController {
     
     // MARK: - Properties
     
-    var currentUserVar: User! {
+    var currentUserVar: User? {
         get {
-            guard let uid = FirebaseController.firebase.authData.uid, let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String : AnyObject] else {
+            guard let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String : AnyObject], let identifier = userDictionary["identifier"] as? String else {
                 return nil
             }
-            return User(json: userDictionary, identifier: uid)
+            
+            return User(json: userDictionary, identifier: identifier)
+            
         }
         
         set {
@@ -41,43 +43,114 @@ class UserController {
     
     // Returns a User in a completion block based on a query with passed in identifier
     static func userForIdentifier(identifier: String, completion: (user: User?) -> Void) {
-            completion(user: mockUsers().first)
+        FirebaseController.dataAtEndPoint(identifier) { (data) -> Void in
+            guard let data = data as? [String : AnyObject] else { return }
+            guard let user = User(json: data, identifier: identifier) else { completion(user: nil) ; return }
+            completion(user: user)
+        }
     }
     
     // Returns all users in a completion block
     static func fetchAllUsers(completion: (users: [User]) -> Void) {
-        completion(users: mockUsers())
-        
+        guard let user = UserController.sharedInstance.currentUserVar else { completion(users: []) ; return }
+        FirebaseController.dataAtEndPoint(user.endpoint) { (data) -> Void in
+            guard let userDictionaries = data as? [[String : AnyObject]] else { return }
+            var users = [User]()
+            for dictionary in userDictionaries {
+                guard let uid = dictionary["uid"] as? String else { return }
+                if let user = User(json: dictionary, identifier: uid) {
+                    users.append(user)
+                }
+            }
+        }
     }
     
     // Function allows a User to Follow another User
     static func followUser(user: User, completion: (wasSuccesful: Bool) -> Void) {
+        guard let loggedInUser = UserController.sharedInstance.currentUserVar else { completion(wasSuccesful: false) ; return }
+        let ref = FirebaseController.firebase.childByAppendingPath("users/\(loggedInUser)/follows/\(user.identifier)")
+        ref.setValue(true)
         completion(wasSuccesful: true)
     }
     
     // Alternatively unfollows a user
     static func unfollowUser(user: User, completion: (wasSuccesful: Bool) -> Void) {
+        guard let loggedInUser = UserController.sharedInstance.currentUserVar else { completion(wasSuccesful: false) ; return }
+        let ref = FirebaseController.firebase.childByAppendingPath("users/\(loggedInUser)/follows/\(user.identifier)")
+        ref.setValue(false)
         completion(wasSuccesful: true)
     }
     
     // Checks to see if a user is following another user
     static func userFollowsUser(userOne: User, userTwo: User, completion: (isFollowing: Bool) -> Void) {
-        completion(isFollowing: true)
+        let ref = FirebaseController.firebase.childByAppendingPath("users/\(userOne.identifier)/follows/\(userTwo.identifier)")
+        ref.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let bool = data.value as? Bool {
+                if bool == true {
+                    completion(isFollowing: true)
+                    return
+                } else {
+                    completion(isFollowing: false)
+                    return
+                }
+            } else {
+                completion(isFollowing: false)
+            }
+        })
     }
     
     // Shows wh0 is is following a user
     static func followedByUser(user: User, completion: (users: [User]?) -> Void) {
-        completion(users: [User(username: "ACREEPER", identifier: nil, bio: nil, url: nil)])
+        guard let loggedInUser = UserController.sharedInstance.currentUserVar else { completion(users: nil) ; return }
+        let ref = FirebaseController.firebase.childByAppendingPath("users/\(loggedInUser.identifier)/follows/")
+        ref.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            guard let identifierDictionary = data.value as? [[String : AnyObject]] else { return }
+            var users = [User]()
+            let identifiers = identifierDictionary.flatMap { $0.keys }
+            for identifier in identifiers {
+                userForIdentifier(identifier, completion: { (user) -> Void in
+                    if let user = user {
+                        users.append(user)
+                    }
+                })
+            }
+        })
     }
     
     // Check to see if a user is actually relevant when loggin in
     static func authenticateUser(email: String, password: String, completion: (wasSuccesful: Bool, user: User?) -> Void) {
-        completion(wasSuccesful: true, user: mockUsers().first)
+        FirebaseController.firebase.authUser(email, password: password) { (error, authData) -> Void in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(wasSuccesful: false, user: nil)
+                return
+            }
+            
+            guard let uid = authData.uid else { completion(wasSuccesful: false, user: nil) ; return }
+            userForIdentifier(uid, completion: { (user) -> Void in
+                guard let user = user else { completion(wasSuccesful: false, user: nil) ; return }
+                UserController.sharedInstance.currentUserVar = user
+                completion(wasSuccesful: true, user: user)
+            })
+        }
     }
     
     // Creates a new user if valid information inputed
     static func createUser(email: String, password: String, bio: String?, url: String?, completion: (wasSuccesful: Bool, user: User?) -> Void) {
-        completion(wasSuccesful: true, user: mockUsers().first)
+        FirebaseController.firebase.createUser(email, password: password, withValueCompletionBlock:  { (error, userDictionary) -> Void in
+            if let error = error {
+                print(error.localizedDescription)
+                completion(wasSuccesful: false, user: nil)
+            }
+            if let uid = userDictionary["uid"] as? String {
+                let user = User(username: email, identifier: uid, bio: bio, url: url)
+                UserController.sharedInstance.currentUserVar = user
+                completion(wasSuccesful: true, user: user)
+            } else {
+                completion(wasSuccesful: false, user: nil)
+            }
+        })
+        
     }
     
     // Updates the current User
@@ -85,26 +158,14 @@ class UserController {
         completion(wasSuccesful: true)
     }
     
-    // Just a test
-    static func currentUserTest() -> User? {
-        return nil
-    }
-    
     // logs the current User out
     static func logUserOut() {
+        FirebaseController.firebase.unauth()
         self.sharedInstance.currentUserVar = nil
     }
     
     // Mock Users Array
-    static func mockUsers() -> [User] {
-        return [
-        
-            User(username: "JakeOfUtah", identifier: nil, bio: "Hi", url: "Http://twitter.com"),
-            User(username: "nilCoalescer", identifier: nil, bio: nil, url: nil),
-            User(username: "xXsupsXx", identifier: nil, bio: nil, url: nil)
-            
-        ]
-    }
+    
     
     
     
