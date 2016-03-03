@@ -27,7 +27,7 @@ struct User: Equatable, FirebaseType {
     
     
     var endpoint: String {
-        return "/users/"
+        return "users"
     }
     
     var jsonValue: [String : AnyObject] {

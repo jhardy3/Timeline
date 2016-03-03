@@ -19,11 +19,10 @@ class ImageController {
     
     // This func uploads an image
     static func uploadImage(image: UIImage, completion: (identifer: String) -> Void) {
-        FirebaseController.observeDataAtEndPoint("images/\(image.base64String)") { (data) -> Void in
-            if let uid = data?.uid {
-                completion(identifer: uid)
-            }
-        }
+        guard let imageConverted = image.base64String else { return }
+        let imageBase = FirebaseController.firebase.childByAppendingPath("images").childByAutoId()
+        imageBase.setValue(imageConverted)
+        completion(identifer: imageBase.key)
         
     }
     
@@ -48,7 +47,7 @@ class ImageController {
 extension UIImage {
     var base64String: String? {
         get {
-            guard let image = UIImageJPEGRepresentation(self, 100) else { return nil }
+            guard let image = UIImageJPEGRepresentation(self, 0.7) else { return nil }
             let imageAsData = image.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
             return imageAsData
         }

@@ -43,7 +43,7 @@ class AddPhotoTableViewController: UITableViewController, UIImagePickerControlle
     @IBAction func doneButtonTapped(sender: UIBarButtonItem) {
         if let image = self.image {
             let text = caption ?? ""
-            PostController.addPost("-K1l4125TYvKMc7rcp5e", caption: text, completion: { (wasSuccessful, post) -> Void in
+            PostController.addPost(image, caption: text, completion: { (wasSuccessful, post) -> Void in
                 if wasSuccessful {
                 self.navigationController?.popViewControllerAnimated(true)
                 } else {

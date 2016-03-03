@@ -17,9 +17,7 @@ class UserController {
     
     var currentUserVar: User? {
         get {
-            guard let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String : AnyObject], let identifier = userDictionary["identifier"] as? String else {
-                return nil
-            }
+            guard let userDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String : AnyObject], let identifier = FirebaseController.firebase.authData?.uid else { return nil }
             
             return User(json: userDictionary, identifier: identifier)
             
@@ -43,7 +41,7 @@ class UserController {
     
     // Returns a User in a completion block based on a query with passed in identifier
     static func userForIdentifier(identifier: String, completion: (user: User?) -> Void) {
-        FirebaseController.dataAtEndPoint(identifier) { (data) -> Void in
+        FirebaseController.dataAtEndPoint("users/\(identifier)") { (data) -> Void in
             guard let data = data as? [String : AnyObject] else { return }
             guard let user = User(json: data, identifier: identifier) else { completion(user: nil) ; return }
             completion(user: user)
@@ -52,16 +50,10 @@ class UserController {
     
     // Returns all users in a completion block
     static func fetchAllUsers(completion: (users: [User]) -> Void) {
-        guard let user = UserController.sharedInstance.currentUserVar else { completion(users: []) ; return }
-        FirebaseController.dataAtEndPoint(user.endpoint) { (data) -> Void in
-            guard let userDictionaries = data as? [[String : AnyObject]] else { return }
-            var users = [User]()
-            for dictionary in userDictionaries {
-                guard let uid = dictionary["uid"] as? String else { return }
-                if let user = User(json: dictionary, identifier: uid) {
-                    users.append(user)
-                }
-            }
+        FirebaseController.dataAtEndPoint("users") { (data) -> Void in
+            guard let userDictionaries = data as? [String : AnyObject] else { print("wtf") ;return }
+            let users = userDictionaries.flatMap({User(json: $0.1 as! [String : AnyObject], identifier: $0.0)})
+            completion(users: users)
         }
     }
     
@@ -77,7 +69,7 @@ class UserController {
     static func unfollowUser(user: User, completion: (wasSuccesful: Bool) -> Void) {
         guard let loggedInUser = UserController.sharedInstance.currentUserVar else { completion(wasSuccesful: false) ; return }
         let ref = FirebaseController.firebase.childByAppendingPath("users/\(loggedInUser)/follows/\(user.identifier)")
-        ref.setValue(false)
+        ref.removeValue()
         completion(wasSuccesful: true)
     }
     
@@ -85,36 +77,29 @@ class UserController {
     static func userFollowsUser(userOne: User, userTwo: User, completion: (isFollowing: Bool) -> Void) {
         let ref = FirebaseController.firebase.childByAppendingPath("users/\(userOne.identifier)/follows/\(userTwo.identifier)")
         ref.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
-            if let bool = data.value as? Bool {
-                if bool == true {
-                    completion(isFollowing: true)
-                    return
-                } else {
-                    completion(isFollowing: false)
-                    return
-                }
-            } else {
-                completion(isFollowing: false)
-            }
+            guard let _ = data else { completion(isFollowing: false) ; return }
+            completion(isFollowing: true)
         })
     }
     
     // Shows wh0 is is following a user
     static func followedByUser(user: User, completion: (users: [User]?) -> Void) {
-        guard let loggedInUser = UserController.sharedInstance.currentUserVar else { completion(users: nil) ; return }
-        let ref = FirebaseController.firebase.childByAppendingPath("users/\(loggedInUser.identifier)/follows/")
-        ref.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
-            guard let identifierDictionary = data.value as? [[String : AnyObject]] else { return }
-            var users = [User]()
-            let identifiers = identifierDictionary.flatMap { $0.keys }
-            for identifier in identifiers {
-                userForIdentifier(identifier, completion: { (user) -> Void in
+        FirebaseController.dataAtEndPoint("users/\(user.identifier)/follows/") { (data) -> Void in
+            guard let json = data as? [String : AnyObject] else { completion(users: nil) ; return }
+            
+            var userArray = [User]()
+            
+            for userDic in json {
+                userForIdentifier(userDic.0, completion: { (user) -> Void in
                     if let user = user {
-                        users.append(user)
+                        userArray.append(user)
+                        completion(users: userArray)
                     }
+                    
                 })
             }
-        })
+            
+        }
     }
     
     // Check to see if a user is actually relevant when loggin in

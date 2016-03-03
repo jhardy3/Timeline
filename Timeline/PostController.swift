@@ -18,40 +18,43 @@ class PostController {
     
     // Grabs timeline data for a given user
     static func fetchTimeLineForUser(user: User, completion: (posts: [Post]) -> Void) {
-        var allPosts = [Post]()
-        let group = dispatch_group_create()
-        
-        dispatch_group_enter(group)
-        guard let user = UserController.sharedInstance.currentUserVar else { completion(posts: []) ; return }
-        UserController.followedByUser(user) { (users) -> Void in
-            if let users = users {
-                for user in users {
-                    postsForUser(user, completion: { (posts) -> Void in
+        UserController.followedByUser(user) { (followed) in
+            
+            var allPosts: [Post] = []
+            let dispatchGroup = dispatch_group_create()
+            
+            dispatch_group_enter(dispatchGroup)
+            postsForUser(UserController.sharedInstance.currentUserVar!, completion: { (posts) -> Void in
+                
+                if let posts = posts {
+                    allPosts += posts
+                }
+                
+                dispatch_group_leave(dispatchGroup)
+            })
+            
+            if let followed = followed {
+                for user in followed {
+                    
+                    dispatch_group_enter(dispatchGroup)
+                    postsForUser(user, completion: { (posts) in
                         if let posts = posts {
                             allPosts += posts
-                            dispatch_group_leave(group)
                         }
+                        dispatch_group_leave(dispatchGroup)
                     })
                 }
             }
             
-            dispatch_group_enter(group)
-            postsForUser(user, completion: { (posts) -> Void in
-                if let posts = posts {
-                    allPosts += posts
-                    dispatch_group_leave(group)
-                }
+            dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), { () -> Void in
+                let orderedPosts = orderPosts(allPosts)
+                completion(posts: orderedPosts)
             })
         }
-        
-        dispatch_group_notify(group, dispatch_get_main_queue()) { () -> Void in
-            completion(posts: orderPosts(allPosts))
-        }
-        
     }
     
     // Adds an image and a post
-    static func addPost(image: String, caption: String?, completion: (wasSuccessful: Bool, post: Post?) -> Void) {
+    static func addPost(image: UIImage, caption: String?, completion: (wasSuccessful: Bool, post: Post?) -> Void) {
         ImageController.uploadImage(image) { (identifer) -> Void in
             guard let user = UserController.sharedInstance.currentUserVar else { completion(wasSuccessful: false, post: nil) ; return }
             var post = Post(imageEndPoint: identifer, username: user.username , caption: caption, comments: [], likes: [], identifier: nil)
