@@ -46,14 +46,17 @@ protocol FirebaseType {
 
 extension FirebaseType {
     mutating func save() {
-        if let identifer = identifier {
-            FirebaseController.firebase.childByAppendingPath(identifer).updateChildValues(jsonValue)
+        
+        var endpointBase: Firebase
+        
+        if let identifier = self.identifier {
+            endpointBase = FirebaseController.firebase.childByAppendingPath(endpoint).childByAppendingPath(identifier)
         } else {
-            let firebaseIdentifier = FirebaseController.firebase.childByAutoId()
-            self.identifier = firebaseIdentifier.key
-            firebaseIdentifier.updateChildValues(jsonValue)
+            endpointBase = FirebaseController.firebase.childByAppendingPath(endpoint).childByAutoId()
+            self.identifier = endpointBase.key
         }
         
+        endpointBase.updateChildValues(self.jsonValue)
     }
     
     func delete() {
