@@ -110,19 +110,33 @@ In an ideal world, we would host our images to Amazon S3 for fast, cheap asset h
 
 ##### Base 64 Encode / Decode
 
-1. Define a new extension for ```UIImage``` at the bottom of the ```ImageController.swift``` file.
-2. Create a calculated property ```base64String``` that returns an optional string.
-3. Implement the calculated property by guarding a compressed ```UIImageJPEGRepresentation``` copy of the image represented as ```NSData```.
-    * note: Play with various compression rates, the higher the compression, the faster loading images will go.
-4. Return the data as a string with ```.base64EncodedStringWithOptions```.
-5. Define a failable convenience initializer that takes a base64 encoded string as a parameter.
-6. Implement the initializer by converting the string into ```NSData``` (```NSData(base64EncodedString: String)```) and calling ```self.init(data: NSData)``` with the result.
-
 ##### Upload and Download
 
-1. Implement the ```uploadImage``` function by converting the image into a base64 encoded string, creating a Firebase child reference under the "images" endpoint, setting the encoded string as the value, and calling the completion closure with the identifier of the new child.
-    * note: Firebase references return the last segment path of the endpoint with a ```.key``` parameter.
-2. Implement the ```imageForIdentifier``` function by fetching the data at the "images" endpoint for the image identifier, unwrapping the Base 64 string, initializing the ```UIImage```, and calling the completion closure with the initialized image.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Black Diamonds
 
@@ -131,6 +145,16 @@ In an ideal world, we would host our images to Amazon S3 for fast, cheap asset h
 ### Tests
 
 ## Contributions
+
+
+
+
+
+
+
+
+
+
 
 Please refer to CONTRIBUTING.md.
 

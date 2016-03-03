@@ -27,7 +27,7 @@ class LoginSignupViewController: UIViewController {
     var mode: ViewMode = .SignUp
     var user: User?
     
-
+    
     
     var fieldsAreValid: Bool {
         get {
@@ -86,7 +86,7 @@ class LoginSignupViewController: UIViewController {
                 let bio = bioTextField.text ?? nil
                 UserController.updateUser(UserController.sharedInstance.currentUserVar!, username: usernameTextField.text!, bio: bio, completion: { (wasSuccesful) -> Void in
                     if wasSuccesful {
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismissViewControllerAnimated(true, completion: nil)
                     } else {
                         self.createAlert()
                     }
@@ -111,7 +111,7 @@ class LoginSignupViewController: UIViewController {
             
         case .SignUp:
             actionButton.setTitle("Sign Up", forState: .Normal)
-        
+            
         case .Edit:
             emailTextField.hidden = true
             passwordTextField.hidden = true

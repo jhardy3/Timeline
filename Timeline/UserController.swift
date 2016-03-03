@@ -143,8 +143,9 @@ class UserController {
                 completion(wasSuccesful: false, user: nil)
             }
             if let uid = userDictionary["uid"] as? String {
-                let user = User(username: email, identifier: uid, bio: bio, url: url)
+                var user = User(username: email, identifier: uid, bio: bio, url: url)
                 UserController.sharedInstance.currentUserVar = user
+                user.save()
                 completion(wasSuccesful: true, user: user)
             } else {
                 completion(wasSuccesful: false, user: nil)
@@ -155,7 +156,15 @@ class UserController {
     
     // Updates the current User
     static func updateUser(user: User, username: String, bio: String?, completion: (wasSuccesful: Bool) -> Void) {
-        completion(wasSuccesful: true)
+        if let bio = bio {
+            
+            var newUser = User(username: username, identifier: user.identifier, bio: bio, url: "Hiiiii")
+            newUser.save()
+            UserController.userForIdentifier(newUser.identifier!, completion: { (user) -> Void in
+                UserController.sharedInstance.currentUserVar = user
+            })
+            completion(wasSuccesful: true)
+        }
     }
     
     // logs the current User out

@@ -18,16 +18,47 @@ class ImageController {
     // MARK: - Static Funcs
     
     // This func uploads an image
-    static func uploadImage(image: String, completion: (identifer: String) -> Void) {
-        completion(identifer: "-K1l4125TYvKMc7rcp5e")
+    static func uploadImage(image: UIImage, completion: (identifer: String) -> Void) {
+        FirebaseController.observeDataAtEndPoint("images/\(image.base64String)") { (data) -> Void in
+            if let uid = data?.uid {
+                completion(identifer: uid)
+            }
+        }
+        
     }
     
     // returns a UIImage
     static func imageForIdentifier(identifier: String, completion: (image: UIImage?) -> Void) {
-        completion(image: UIImage(named: "MockData"))
+        FirebaseController.dataAtEndPoint(identifier) { (data) -> Void in
+            if let image = data as? String {
+                let completedImage = UIImage(imageAsString: image)
+                completion(image: completedImage)
+            } else {
+                completion(image: nil)
+            }
+        }
     }
     
     
     
     
+}
+
+
+extension UIImage {
+    var base64String: String? {
+        get {
+            guard let image = UIImageJPEGRepresentation(self, 100) else { return nil }
+            let imageAsData = image.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+            return imageAsData
+        }
+    }
+    
+    
+    convenience init?(imageAsString: String) {
+        
+        guard let data = NSData(base64EncodedString: imageAsString, options: .IgnoreUnknownCharacters) else { return nil }
+        self.init(data: data)
+        
+    }
 }
